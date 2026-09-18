@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MercaCui</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#092b63}
+header{background:#092b63;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+header b{font-size:25px}header b span{color:#35b52c}
+main{max-width:1100px;margin:auto;padding:25px}.box,.card{background:#fff;border-radius:18px;padding:22px;margin-bottom:20px;box-shadow:0 5px 20px #0001}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+button{border:0;border-radius:10px;padding:12px 16px;background:#092b63;color:white;font-weight:bold;cursor:pointer}
+input,select{width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccd6e2;border-radius:9px}
+#app,#admin{display:none}.logo{text-align:center;padding:25px}.logo h1{font-size:42px;margin:8px}.logo span{color:#35b52c}
+.map{height:330px;border-radius:16px;background:repeating-linear-gradient(45deg,#fff 0 24px,#dfe7ef 25px 27px);position:relative;overflow:hidden}
+.route{position:absolute;height:9px;width:72%;left:14%;top:53%;background:#243dff;transform:rotate(-16deg);border-radius:20px}
+.moto{position:absolute;left:48%;top:45%;font-size:36px}.pin{position:absolute;background:#e53935;width:25px;height:25px;border:4px solid white;border-radius:50%}.p1{left:12%;top:63%}.p2{right:10%;top:30%}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.nav button{background:#0879e8}.nav button:nth-child(2){background:#35b52c}.nav button:nth-child(3){background:#5b4bd8}
+.note{border-left:6px solid #35b52c;background:#f1faed;padding:15px;border-radius:10px}
+small{color:#667085}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #dde5ee;text-align:left}
+</style>
+</head>
+<body>
 
+<header><b>Merca<span>Cui</span></b><button onclick="logout()">Salir</button></header>
+
+<section id="login" style="max-width:460px;margin:7vh auto;padding:20px">
+<div class="box logo"><h1>Merca<span>Cui</span></h1><p>Cuidamos tu camino, impulsamos tu trabajo.</p>
+<label>Usuario</label><input id="u" placeholder="Usuario">
+<label>Contraseña</label><input id="p" type="password" placeholder="Contraseña">
+<button onclick="login()" style="width:100%">Iniciar sesión</button>
+<hr><button onclick="demo('trabajador')" style="width:100%;margin:5px 0">Probar como trabajador</button>
+<button onclick="demo('empresa')" style="width:100%;margin:5px 0">Probar como empresa</button>
+<button onclick="demo('admin')" style="width:100%;margin:5px 0">Administración MercaCui</button>
+<p><small>Demo: trabajador / 1234 · empresa / 1234 · admin / MercaCui2026</small></p>
+</div></section>
+
+<section id="app"><main>
+<h1 id="welcome">Panel del trabajador</h1>
+<p><small>Usuario: <span id="who"></span></small></p>
+<div class="nav"><button onclick="module('ruta')">🏍️ MercaRuta</button><button onclick="module('des')">🧘 MercaDes</button><button onclick="module('cap')">🎓 MercaCap</button></div>
+<div class="box"><h2>🗺️ Mi recorrido</h2><div class="map"><div class="pin p1"></div><div class="pin p2"></div><div class="route"></div><div class="moto">🏍️</div></div>
+<p><b>Ruta Segura:</b> Mercado de Bazurto → Tienda La Playita, Sector Progreso.</p></div>
+<div id="content"></div>
+</main></section>
+
+<section id="admin"><main>
+<h1>Administración de MercaCui</h1><p><small>Panel central de gestión de la plataforma.</small></p>
+<div class="grid">
+<div class="card"><h3>👷 Trabajadores</h3><h2 id="nWorkers">0</h2><small>Usuarios registrados</small></div>
+<div class="card"><h3>🏢 Empresas</h3><h2 id="nCompanies">0</h2><small>Empresas registradas</small></div>
+<div class="card"><h3>🏍️ Rutas</h3><h2 id="nRoutes">0</h2><small>Rutas creadas</small></div>
+<div class="card"><h3>🔔 Actividad</h3><h2 id="nActivity">0</h2><small>Registros del sistema</small></div>
+</div>
+<div class="box"><h2>Crear empresa</h2><input id="cn" placeholder="Nombre de empresa"><input id="cc" placeholder="Código de empresa"><button onclick="addCompany()">Registrar empresa</button></div>
+<div class="box"><h2>Trabajadores registrados</h2><table><thead><tr><th>Nombre</th><th>Documento</th><th>Usuario</th><th>Empresa</th></tr></thead><tbody id="workers"></tbody></table></div>
+<div class="box"><h2>Control de rutas</h2><input id="ro" placeholder="Origen"><input id="rd" placeholder="Destino"><select id="rf"><option>Diaria</option><option>Semanal</option><option>Mensual</option></select><button onclick="addRoute()">Guardar ruta</button></div>
+</main></section>
+
+<script>
+const get=(k,d=[])=>JSON.parse(localStorage.getItem(k)||JSON.stringify(d));
+const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let users=get("mc_users"),companies=get("mc_companies"),routes=get("mc_routes"),activity=get("mc_activity");
+if(!users.length){users=[
+{type:"trabajador",name:"Mercaderista Demo",document:"000000",username:"trabajador",password:"1234",company:"MER-001"},
+{type:"empresa",name:"Empresa Demo",document:"900000000",username:"empresa",password:"1234",company:"MER-001"}
+];set("mc_users",users)}
+function login(){let x=users.find(a=>a.username==u.value&&a.password==p.value);if(!x)return alert("Usuario o contraseña incorrectos");open(x)}
+function demo(t){open(t=="admin"?{type:"admin",name:"Administrador"}:users.find(x=>x.type==t))}
+function open(x){login.style.display="none";if(x.type=="admin"){admin.style.display="block";refresh();return}app.style.display="block";welcome.textContent=x.type=="empresa"?"Panel empresarial 🏢":"Bienvenido a MercaCui 👋";who.textContent=x.name}
+function logout(){location.reload()}
+function module(x){let c=document.getElementById("content");if(x=="ruta")c.innerHTML='<div class="box"><h2>🏍️ MercaRuta</h2><p>Ruta segura, seguimiento del recorrido y puntos de riesgo.</p><div class="note"><b>Ruta Segura</b><br>Mercado de Bazurto → Tienda La Playita, Sector Progreso.</div></div>';if(x=="des")c.innerHTML='<div class="box"><h2>🧘 MercaDes</h2><div class="note"><b>MercaDes</b><br>Es hora de tu pausa activa y descanso reglamentario.<br><br>📍 Centro Comercial Olaya Plaza · ⏱️ 20 minutos</div></div>';if(x=="cap")c.innerHTML='<div class="box"><h2>🎓 MercaCap</h2><p><b>4.ª Capacitación Integral a Mercaderistas</b></p><p>Tema: manejo del estrés laboral en las vías y carreteras.</p><p>📍 Sede MercaCui, Barrio Amberes.</p></div>'}
+function addCompany(){if(!cn.value||!cc.value)return alert("Completa los campos");companies.push({name:cn.value,code:cc.value});set("mc_companies",companies);activity.push("empresa");set("mc_activity",activity);cn.value=cc.value="";refresh()}
+function addRoute(){if(!ro.value||!rd.value)return alert("Completa origen y destino");routes.push({origin:ro.value,destination:rd.value,frequency:rf.value});set("mc_routes",routes);activity.push("ruta");set("mc_activity",activity);ro.value=rd.value="";refresh()}
+function refresh(){nWorkers.textContent=users.filter(x=>x.type=="trabajador").length;nCompanies.textContent=companies.length;nRoutes.textContent=routes.length;nActivity.textContent=activity.length;workers.innerHTML=users.filter(x=>x.type=="trabajador").map(x=>`<tr><td>${x.name}</td><td>${x.document}</td><td>${x.username}</td><td>${x.company}</td></tr>`).join("")}
+</script>
+</body>
+</html>
