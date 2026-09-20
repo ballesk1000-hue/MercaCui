@@ -3,417 +3,4578 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MercaCui | Plataforma SST</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<title>MercaCui | Cuidamos tu camino</title>
+
+<link rel="icon" href="logo-mercacui.png">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
 <style>
-:root{--primary:#0b6e4f;--secondary:#123b5d;--accent:#f4b942;--bg:#f4f7f8;--card:#fff;--text:#17212b;--muted:#68737d;--danger:#c62828;--success:#16834b;--border:#dce4e8}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,var(--secondary),var(--primary))}
-.login-card{width:min(460px,100%);background:white;border-radius:22px;padding:30px;box-shadow:0 20px 60px #0005;text-align:center}.brand-logo{width:110px;height:110px;object-fit:contain;border-radius:18px;margin:auto auto 10px;display:block}.brand-fallback{width:110px;height:110px;border-radius:18px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;margin:auto auto 10px}
-.login-card h1{margin:5px 0}.login-card p{color:var(--muted)}.field{margin:12px 0;text-align:left}.field label{display:block;font-weight:700;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff}
-.btn{padding:11px 15px;border-radius:10px;background:var(--primary);color:#fff;font-weight:700}.btn.secondary{background:var(--secondary)}.btn.warning{background:var(--accent);color:#17212b}.btn.danger{background:var(--danger)}.btn.light{background:#eaf1f3;color:var(--text)}.btn.small{padding:7px 9px;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.demo-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.demo-row button{flex:1;min-width:110px}
-#app{min-height:100vh}.topbar{height:68px;background:var(--secondary);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:1000}.top-brand{display:flex;align-items:center;gap:10px;font-weight:900}.top-brand img{width:40px;height:40px;object-fit:contain;border-radius:8px}.top-brand .mini-logo{width:40px;height:40px;background:var(--primary);display:flex;align-items:center;justify-content:center;border-radius:8px}.user-info{display:flex;align-items:center;gap:10px}
-.layout{display:flex;min-height:calc(100vh - 68px)}.sidebar{width:240px;background:#fff;border-right:1px solid var(--border);padding:15px;position:sticky;top:68px;height:calc(100vh - 68px);overflow:auto}.nav-title{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;margin:15px 8px 6px}.nav-btn{width:100%;text-align:left;padding:11px;border-radius:9px;background:transparent;margin:2px 0;color:var(--text)}.nav-btn:hover,.nav-btn.active{background:#eaf4f0;color:var(--primary);font-weight:800}.content{flex:1;padding:22px;min-width:0}.section{display:none}.section.active{display:block}.page-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:18px}.page-head h2{margin:0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:17px;box-shadow:0 4px 15px #00000008}.stat{font-size:30px;font-weight:900;color:var(--primary);margin-top:5px}.muted{color:var(--muted)}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;background:white}.table th,.table td{padding:10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.table th{background:#f0f4f5}.tag{display:inline-block;padding:4px 8px;border-radius:99px;font-size:12px;font-weight:800;background:#e9eef0}.tag.green{background:#dff3e8;color:#12643b}.tag.red{background:#fde3e3;color:#9e1c1c}.tag.yellow{background:#fff1c9;color:#765600}.tag.blue{background:#e1effc;color:#185785}
-.map-layout{display:grid;grid-template-columns:320px 1fr;gap:15px}.map-tools{background:#fff;border:1px solid var(--border);border-radius:15px;padding:15px;max-height:700px;overflow:auto}#map{height:650px;border-radius:15px;border:1px solid var(--border);z-index:1}.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:13px}.legend div{padding:6px;border-radius:7px;background:#f3f5f6}
-.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:20px;z-index:3000}.modal.show{display:flex}.modal-card{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:17px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center}.close{background:#eee;border-radius:8px;padding:7px}
-.notice{padding:12px;border-radius:10px;background:#eef7f3;border-left:4px solid var(--primary);margin-bottom:8px}.notice.risk{background:#fff0f0;border-left-color:var(--danger)}.notice.training{background:#edf4ff;border-left-color:#2570a8}.notice.rest{background:#fff8dc;border-left-color:#c88b00}
-.list{display:grid;gap:8px}.empty{padding:20px;text-align:center;color:var(--muted);background:#fafcfc;border:1px dashed var(--border);border-radius:10px}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.map-layout{grid-template-columns:1fr}.sidebar{width:205px}}
-@media(max-width:700px){.layout{display:block}.sidebar{position:relative;top:0;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border);display:flex;gap:5px;overflow:auto}.nav-title{display:none}.nav-btn{min-width:max-content;width:auto}.content{padding:14px}.grid{grid-template-columns:1fr}.topbar{padding:0 10px}.user-info span{display:none}#map{height:500px}}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+    --azul:#063b82;
+    --azul2:#0879e8;
+    --verde:#22b719;
+    --verde2:#55d62d;
+    --blanco:#ffffff;
+    --gris:#f3f6fa;
+    --gris2:#dce4ee;
+    --texto:#10233f;
+    --rojo:#d62828;
+    --amarillo:#f2a900;
+}
+
+body{
+    background:var(--gris);
+    color:var(--texto);
+}
+
+/* LOGIN */
+
+#login{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    background:
+        linear-gradient(135deg,#ffffff,#eef7ff);
+}
+
+.login-box{
+    background:white;
+    width:100%;
+    max-width:470px;
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 15px 50px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.login-logo{
+    width:100%;
+    max-width:390px;
+    max-height:270px;
+    object-fit:contain;
+    margin-bottom:10px;
+}
+
+.login-box h1{
+    color:var(--azul);
+    margin-bottom:5px;
+}
+
+.login-box p{
+    color:#65748a;
+    margin-bottom:20px;
+}
+
+.form-group{
+    text-align:left;
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--gris2);
+    border-radius:10px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--azul2);
+}
+
+textarea{
+    resize:vertical;
+    min-height:100px;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    border-radius:10px;
+    padding:11px 16px;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:var(--azul2);
+    color:white;
+}
+
+.btn-green{
+    background:var(--verde);
+    color:white;
+}
+
+.btn-danger{
+    background:#ffe9e9;
+    color:var(--rojo);
+}
+
+.btn-secondary{
+    background:#eaf2fc;
+    color:var(--azul);
+}
+
+.login-button{
+    width:100%;
+    margin-top:5px;
+    font-size:16px;
+}
+
+.demo{
+    background:#f3f7fc;
+    padding:14px;
+    margin-top:20px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.8;
+}
+
+/* APP */
+
+.hidden{
+    display:none!important;
+}
+
+.topbar{
+    height:75px;
+    background:white;
+    border-bottom:1px solid var(--gris2);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:8px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.topbar-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.topbar-logo{
+    height:58px;
+    width:75px;
+    object-fit:contain;
+}
+
+.brand-name{
+    color:var(--azul);
+    font-size:20px;
+    font-weight:bold;
+}
+
+.role{
+    color:#68788d;
+    font-size:12px;
+}
+
+.topbar-right{
+    display:flex;
+    gap:8px;
+}
+
+/* LAYOUT */
+
+.layout{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    min-height:calc(100vh - 75px);
+}
+
+.sidebar{
+    background:white;
+    border-right:1px solid var(--gris2);
+    padding:15px;
+}
+
+.sidebar-title{
+    font-size:11px;
+    color:#7c8999;
+    font-weight:bold;
+    margin:15px 8px 8px;
+    text-transform:uppercase;
+}
+
+.nav-button{
+    width:100%;
+    text-align:left;
+    background:white;
+    color:var(--texto);
+    margin-bottom:5px;
+}
+
+.nav-button:hover,
+.nav-button.active{
+    background:#eaf3ff;
+    color:var(--azul);
+}
+
+.content{
+    padding:22px;
+    min-width:0;
+}
+
+/* TITULOS */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+
+.page-header h2{
+    color:var(--azul);
+}
+
+.page-header p{
+    color:#68788d;
+    margin-top:5px;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--gris2);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
+}
+
+.card h3{
+    color:var(--azul);
+    margin-bottom:8px;
+}
+
+.stat strong{
+    display:block;
+    font-size:32px;
+    color:var(--azul2);
+}
+
+.stat span{
+    color:#68788d;
+}
+
+.section{
+    margin-top:18px;
+}
+
+/* TABLAS */
+
+.table-container{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:11px;
+    border-bottom:1px solid var(--gris2);
+    text-align:left;
+    white-space:nowrap;
+}
+
+th{
+    color:#66768b;
+    font-size:13px;
+}
+
+/* BADGES */
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#eaf3ff;
+    color:var(--azul);
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badge.green{
+    background:#e8f8e7;
+    color:#168012;
+}
+
+.badge.red{
+    background:#ffe9e9;
+    color:#a51c1c;
+}
+
+.badge.yellow{
+    background:#fff4d8;
+    color:#966400;
+}
+
+/* MAPA */
+
+#map{
+    width:100%;
+    height:500px;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid var(--gris2);
+}
+
+.map-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:10px 0;
+}
+
+/* RUTA */
+
+.route-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.route-point{
+    background:#f4f7fb;
+    padding:14px;
+    border-radius:12px;
+}
+
+.route-point.start{
+    border-left:5px solid var(--verde);
+}
+
+.route-point.end{
+    border-left:5px solid var(--azul2);
+}
+
+.route-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+
+/* SOLICITUDES */
+
+.request-card{
+    border:1px solid var(--gris2);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:10px;
+    background:white;
+}
+
+.request-card h4{
+    color:var(--azul);
+}
+
+.request-card small{
+    color:#718095;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:3000;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:600px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:18px;
+    padding:22px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.close{
+    background:#eee;
+    font-size:20px;
+}
+
+/* NOTIFICACIONES */
+
+.notification{
+    padding:15px;
+    border:1px solid var(--gris2);
+    border-radius:12px;
+    margin-bottom:10px;
+    background:white;
+}
+
+.notification.unread{
+    border-left:5px solid var(--verde);
+}
+
+/* TOAST */
+
+#toast{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#10233f;
+    color:white;
+    padding:13px 18px;
+    border-radius:10px;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:5000;
+}
+
+#toast.show{
+    opacity:1;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:auto;
+        z-index:2000;
+        display:flex;
+        overflow-x:auto;
+        border-top:1px solid var(--gris2);
+        border-right:0;
+        padding:6px;
+    }
+
+    .sidebar-title{
+        display:none;
+    }
+
+    .nav-button{
+        min-width:max-content;
+        width:auto;
+        margin:0 3px;
+    }
+
+    .content{
+        padding:12px;
+        padding-bottom:80px;
+    }
+
+    .topbar{
+        padding:7px 10px;
+    }
+
+    .topbar-logo{
+        width:60px;
+    }
+
+    #map{
+        height:430px;
+    }
+
+    .route-info{
+        grid-template-columns:1fr;
+    }
+}
+
 </style>
 </head>
+
 <body>
 
-<div id="loginScreen">
-  <div class="login-card">
-    <div id="loginLogoBox"></div>
-    <h1 id="loginBrandName">MercaCui</h1>
-    <p id="loginSubtitle">Cuidado y seguridad del mercaderista</p>
-    <form id="loginForm">
-      <div class="field"><label>Usuario</label><input id="loginUser" autocomplete="username" required></div>
-      <div class="field"><label>Contraseña</label><input id="loginPass" type="password" autocomplete="current-password" required></div>
-      <button class="btn" style="width:100%" type="submit">Ingresar</button>
-    </form>
-    <div id="loginMsg" class="muted" style="margin-top:10px"></div>
-    <div class="demo-row">
-      <button class="btn light small" type="button" data-demo="trabajador">Trabajador demo</button>
-      <button class="btn light small" type="button" data-demo="empresa">Empresa demo</button>
-      <button class="btn light small" type="button" data-demo="admin">Admin demo</button>
-    </div>
-  </div>
+<!-- LOGIN -->
+
+<section id="login">
+
+<div class="login-box">
+
+<img
+src="logo-mercacui.png"
+class="login-logo"
+alt="MercaCui">
+
+<h1>MercaCui</h1>
+
+<p>
+Cuidamos tu camino, impulsamos tu trabajo.
+</p>
+
+<form id="loginForm">
+
+<div class="form-group">
+
+<label>Usuario</label>
+
+<input
+type="text"
+id="username"
+required
+autocomplete="username">
+
 </div>
 
-<div id="app" class="hidden">
+<div class="form-group">
+
+<label>Contraseña</label>
+
+<input
+type="password"
+id="password"
+required
+autocomplete="current-password">
+
+</div>
+
+<button
+class="btn-primary login-button"
+type="submit">
+
+Ingresar
+
+</button>
+
+</form>
+
+<div class="demo">
+
+<strong>Accesos de demostración</strong><br>
+
+Administrador:
+<code>admin</code> /
+<code>MercaCui2026</code><br>
+
+Empresa:
+<code>empresa</code> /
+<code>1234</code><br>
+
+Trabajador:
+<code>trabajador</code> /
+<code>1234</code>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- APLICACIÓN -->
+
+<section id="app" class="hidden">
+
 <header class="topbar">
-  <div class="top-brand"><div id="topLogoBox" class="mini-logo">MC</div><span id="topBrandName">MercaCui</span></div>
-  <div class="user-info"><span id="currentUserLabel"></span><button class="btn light small" id="logoutBtn">Salir</button></div>
+
+<div class="topbar-left">
+
+<img
+src="logo-mercacui.png"
+class="topbar-logo">
+
+<div>
+
+<div class="brand-name">
+MercaCui
+</div>
+
+<div
+id="roleText"
+class="role">
+</div>
+
+</div>
+
+</div>
+
+<div class="topbar-right">
+
+<button
+class="btn-secondary"
+onclick="actualizar()">
+
+↻ Actualizar
+
+</button>
+
+<button
+class="btn-danger"
+onclick="cerrarSesion()">
+
+Salir
+
+</button>
+
+</div>
+
 </header>
+
+
 <div class="layout">
-<aside class="sidebar">
-  <div class="nav-title">Principal</div>
-  <button class="nav-btn" data-section="inicio">🏠 Inicio</button>
-  <button class="nav-btn" data-section="mercaruta">🗺️ MercaRuta</button>
-  <button class="nav-btn" data-section="mercades">🧘 MercaDes</button>
-  <button class="nav-btn" data-section="mercacap">🎓 MercaCap</button>
-  <button class="nav-btn" data-section="notificaciones">🔔 Notificaciones</button>
-  <div id="companyNav" class="hidden">
-    <div class="nav-title">Empresa</div>
-    <button class="nav-btn" data-section="empresa">🏢 Mi empresa</button>
-  </div>
-  <div id="adminNav" class="hidden">
-    <div class="nav-title">Administración</div>
-    <button class="nav-btn" data-section="admin">⚙️ Administración</button>
-  </div>
+
+<aside
+id="sidebar"
+class="sidebar">
 </aside>
 
-<main class="content">
-<section id="section-inicio" class="section">
-  <div class="page-head"><div><h2>Panel principal</h2><p class="muted" id="welcomeText"></p></div></div>
-  <div class="grid" id="statsGrid"></div>
-  <div class="card" style="margin-top:15px"><h3>Actividad reciente</h3><div id="homeNotices"></div></div>
+<main
+id="content"
+class="content">
+</main>
+
+</div>
+
 </section>
 
-<section id="section-mercaruta" class="section">
-  <div class="page-head"><div><h2>🗺️ MercaRuta</h2><p class="muted">Mapa interactivo para ubicar inicios, destinos, ventas, riesgos, descansos y encuentros.</p></div><div class="actions"><button class="btn small" id="gpsBtn">📍 Mi ubicación</button><button class="btn secondary small" id="googleRouteBtn">Google Maps</button></div></div>
-  <div class="map-layout">
-    <div class="map-tools">
-      <h3>Crear / editar ruta</h3>
-      <div class="field"><label>Trabajador</label><select id="routeWorker"></select></div>
-      <div class="field"><label>Empresa</label><select id="routeCompany"></select></div>
-      <div class="field"><label>Punto de inicio</label><select id="routeStart"></select></div>
-      <div class="field"><label>Punto de destino</label><select id="routeEnd"></select></div>
-      <div class="field"><label>Nombre de ruta</label><input id="routeName" placeholder="Ruta MER-001"></div>
-      <div class="actions"><button class="btn small" id="calculateRouteBtn">Calcular ruta</button><button class="btn warning small" id="saveRouteBtn">Guardar ruta</button></div>
-      <hr>
-      <h3>Colocar punto</h3>
-      <p class="muted">Selecciona un tipo y luego haz clic directamente sobre el mapa.</p>
-      <div class="field"><label>Tipo</label><select id="pointType">
-        <option value="inicio">🟢 Inicio</option><option value="destino">🔵 Destino</option><option value="venta">🟡 Punto de venta</option><option value="riesgo">🔴 Punto de riesgo</option><option value="descanso">🟣 Descanso</option><option value="encuentro">⚫ Punto de encuentro</option>
-      </select></div>
-      <div class="field"><label>Nombre del punto</label><input id="pointName" placeholder="Ej. Tienda La Playita"></div>
-      <div class="actions"><button class="btn small" id="placePointBtn">📍 Activar colocación</button><button class="btn danger small" id="deletePointBtn">Eliminar seleccionado</button></div>
-      <div id="selectedPointInfo" class="muted" style="margin-top:10px"></div>
-      <div class="legend"><div>🟢 Inicio</div><div>🔵 Destino</div><div>🟡 Venta</div><div>🔴 Riesgo</div><div>🟣 Descanso</div><div>⚫ Encuentro</div></div>
-    </div>
-    <div id="map"></div>
-  </div>
-  <div class="card" style="margin-top:15px"><h3>Rutas guardadas</h3><div class="table-wrap"><table class="table"><thead><tr><th>Ruta</th><th>Trabajador</th><th>Inicio</th><th>Destino</th><th>Acciones</th></tr></thead><tbody id="routesTable"></tbody></table></div></div>
-</section>
 
-<section id="section-mercades" class="section">
-  <div class="page-head"><div><h2>🧘 MercaDes</h2><p class="muted">Pausas activas y descansos asignados.</p></div></div>
-  <div class="grid" id="restCards"></div>
-</section>
+<div id="toast"></div>
 
-<section id="section-mercacap" class="section">
-  <div class="page-head"><div><h2>🎓 MercaCap</h2><p class="muted">Capacitaciones programadas.</p></div></div>
-  <div class="grid" id="trainingCards"></div>
-</section>
-
-<section id="section-notificaciones" class="section">
-  <div class="page-head"><div><h2>🔔 Notificaciones</h2></div></div><div id="notificationsList"></div>
-</section>
-
-<section id="section-empresa" class="section">
-  <div class="page-head"><div><h2>🏢 Administración de empresa</h2><p class="muted">Solo puedes administrar los recursos de tu empresa.</p></div></div>
-  <div class="card"><h3>Trabajadores</h3><div class="actions" style="margin-bottom:12px"><button class="btn" id="companyAddWorker">+ Crear trabajador</button></div><div class="table-wrap"><table class="table"><thead><tr><th>Nombre</th><th>Usuario</th><th>Código</th><th>Acciones</th></tr></thead><tbody id="companyWorkersTable"></tbody></table></div></div>
-  <div class="card" style="margin-top:15px"><h3>Mis puntos</h3><p class="muted">Los puntos se crean directamente desde MercaRuta y quedan asociados a tu empresa.</p><div class="table-wrap"><table class="table"><thead><tr><th>Nombre</th><th>Tipo</th><th>Coordenadas</th><th>Acción</th></tr></thead><tbody id="companyPointsTable"></tbody></table></div></div>
-</section>
-
-<section id="section-admin" class="section">
-  <div class="page-head"><div><h2>⚙️ Administración general</h2><p class="muted">Control total de MercaCui.</p></div></div>
-  <div class="grid" id="adminStats"></div>
-
-  <div class="card" style="margin-top:15px">
-    <h3>🎨 Personalización de la web</h3>
-    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="field"><label>Nombre de la plataforma</label><input id="settingName"></div>
-      <div class="field"><label>Subtítulo</label><input id="settingSubtitle"></div>
-      <div class="field"><label>Color principal</label><input id="settingPrimary" type="color"></div>
-      <div class="field"><label>Color secundario</label><input id="settingSecondary" type="color"></div>
-    </div>
-    <div class="field"><label>Logo de MercaCui</label><input id="logoInput" type="file" accept="image/*"><small class="muted">El logo se guarda en este navegador para el prototipo.</small></div>
-    <div class="actions"><button class="btn" id="saveBrandBtn">Guardar apariencia</button><button class="btn danger" id="removeLogoBtn">Quitar logo</button></div>
-  </div>
-
-  <div class="card" style="margin-top:15px"><div class="page-head"><h3>🏢 Empresas</h3><button class="btn small" id="addCompanyBtn">+ Crear empresa</button></div><div class="table-wrap"><table class="table"><thead><tr><th>Empresa</th><th>Usuario</th><th>Código</th><th>Trabajadores</th><th>Acciones</th></tr></thead><tbody id="companiesTable"></tbody></table></div></div>
-
-  <div class="card" style="margin-top:15px"><div class="page-head"><h3>👷 Trabajadores</h3><button class="btn small" id="addWorkerBtn">+ Crear trabajador</button></div><div class="table-wrap"><table class="table"><thead><tr><th>Nombre</th><th>Usuario</th><th>Código</th><th>Empresa</th><th>Acciones</th></tr></thead><tbody id="workersTable"></tbody></table></div></div>
-
-  <div class="card" style="margin-top:15px"><div class="page-head"><h3>📍 Puntos del mapa</h3><button class="btn small" id="adminMapBtn">Abrir MercaRuta</button></div><div class="table-wrap"><table class="table"><thead><tr><th>Nombre</th><th>Tipo</th><th>Empresa</th><th>Coordenadas</th><th>Acciones</th></tr></thead><tbody id="pointsTable"></tbody></table></div></div>
-
-  <div class="card" style="margin-top:15px"><div class="page-head"><h3>🧘 Descansos y 🎓 capacitaciones</h3><div class="actions"><button class="btn small" id="addRestBtn">+ Descanso</button><button class="btn secondary small" id="addTrainingBtn">+ Capacitación</button></div></div><div id="adminSchedules"></div></div>
-</section>
-</main></div></div>
-
-<div id="modal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle">Formulario</h3><button class="close" id="modalClose">✕</button></div><div id="modalBody"></div></div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-'use strict';
 
-const KEY='mercacui_v3';
-const defaultData={
- settings:{name:'MercaCui',subtitle:'Cuidado y seguridad del mercaderista',primary:'#0b6e4f',secondary:'#123b5d',logo:''},
- companies:[{id:'c1',name:'Empresa Demo',username:'empresa',password:'1234',code:'EMP-001',active:true}],
- workers:[{id:'w1',name:'Trabajador Demo',username:'trabajador',password:'1234',code:'MER-001',companyId:'c1',active:true}],
- points:[
-  {id:'p1',name:'Inicio Demo Cartagena',type:'inicio',lat:10.3993,lng:-75.5027,companyId:'c1'},
-  {id:'p2',name:'Destino Demo Cartagena',type:'destino',lat:10.4060,lng:-75.5000,companyId:'c1'},
-  {id:'p3',name:'Punto de riesgo demo',type:'riesgo',lat:10.4025,lng:-75.5010,companyId:'c1'}
- ],
- routes:[],rests:[],trainings:[],notifications:[]
+/* =========================================================
+   MERCACUI
+   VERSIÓN WEB CONTINUA
+   SIN PWA
+   SIN SERVICE WORKER
+   SIN MANIFEST
+   ========================================================= */
+
+
+/* =========================================================
+   DATOS
+   ========================================================= */
+
+const CARTAGENA = [10.3997,-75.5144];
+
+let datos = JSON.parse(
+    localStorage.getItem("MERCACUI_DATOS")
+) || {
+
+    empresas:[
+        {
+            id:"empresa1",
+            nombre:"Empresa Demo",
+            codigo:"MC-DEMO",
+            contacto:"MercaCui"
+        }
+    ],
+
+    trabajadores:[
+        {
+            id:"trabajador1",
+            nombre:"Trabajador Demo",
+            usuario:"trabajador",
+            password:"1234",
+            empresaId:"empresa1"
+        }
+    ],
+
+    rutas:[
+        {
+            id:"ruta1",
+            empresaId:"empresa1",
+            trabajadorId:"trabajador1",
+
+            nombre:
+            "Mercado de Bazurto → Tienda la Playita",
+
+            inicio:
+            "Mercado de Bazurto",
+
+            inicioLat:10.3884,
+            inicioLng:-75.5002,
+
+            destino:
+            "Tienda la Playita - Sector Progreso",
+
+            destinoLat:10.3925,
+            destinoLng:-75.5205,
+
+            estado:"Asignada",
+
+            distancia:0,
+            duracion:0,
+
+            geometria:[]
+        }
+    ],
+
+    puntos:[
+
+        {
+            id:"punto1",
+            empresaId:"empresa1",
+            rutaId:"ruta1",
+            tipo:"riesgo",
+            nombre:"Zona de precaución",
+            descripcion:"Cruce y tráfico vehicular",
+            lat:10.3895,
+            lng:-75.507,
+            estado:"Aprobado"
+        },
+
+        {
+            id:"punto2",
+            empresaId:"empresa1",
+            rutaId:"ruta1",
+            tipo:"descanso",
+            nombre:"Punto de descanso",
+            descripcion:"Pausa activa",
+            lat:10.391,
+            lng:-75.514,
+            estado:"Aprobado"
+        },
+
+        {
+            id:"punto3",
+            empresaId:"empresa1",
+            rutaId:"ruta1",
+            tipo:"venta",
+            nombre:"Tienda la Playita",
+            descripcion:"Punto de venta",
+            lat:10.3925,
+            lng:-75.5205,
+            estado:"Aprobado"
+        }
+
+    ],
+
+    descansos:[
+
+        {
+            id:"descanso1",
+            empresaId:"empresa1",
+            titulo:"20 Minutos de Pausa activa",
+            lugar:"Centro Comercial Olaya Plaza",
+            minutos:20,
+            horario:"Según jornada"
+        }
+
+    ],
+
+    capacitaciones:[
+
+        {
+            id:"cap1",
+            empresaId:"empresa1",
+            titulo:"Capacitación Integral a Mercaderistas",
+            tema:"Estrés laboral en vías y carreteras",
+            fecha:"25 de septiembre",
+            lugar:"Sede MercaCui Barrio Amberes"
+        }
+
+    ],
+
+    solicitudes:[],
+
+    notificaciones:[]
+
 };
-let data=loadData(), currentUser=null, map=null, mapMarkers={}, routeLayer=null, gpsMarker=null, gpsWatch=null, placingPoint=false, selectedPointId=null, lastRoute=null;
 
-function clone(x){return JSON.parse(JSON.stringify(x))}
-function loadData(){try{let x=localStorage.getItem(KEY);return x?Object.assign(clone(defaultData),JSON.parse(x)):clone(defaultData)}catch(e){return clone(defaultData)}}
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function companyById(x){return data.companies.find(c=>c.id===x)}
-function workerById(x){return data.workers.find(w=>w.id===x)}
-function typeLabel(t){return {inicio:'🟢 Inicio',destino:'🔵 Destino',venta:'🟡 Punto de venta',riesgo:'🔴 Riesgo',descanso:'🟣 Descanso',encuentro:'⚫ Encuentro'}[t]||t}
-function isAdmin(){return currentUser?.role==='admin'}
-function isCompany(){return currentUser?.role==='company'}
-function isWorker(){return currentUser?.role==='worker'}
-function visibleWorkers(){return isCompany()?data.workers.filter(w=>w.companyId===currentUser.companyId):data.workers}
-function visiblePoints(){return isCompany()?data.points.filter(p=>p.companyId===currentUser.companyId):data.points}
-function visibleRoutes(){return isWorker()?data.routes.filter(r=>r.workerId===currentUser.id):isCompany()?data.routes.filter(r=>r.companyId===currentUser.companyId):data.routes}
 
-function applyBrand(){
- const s=data.settings; document.documentElement.style.setProperty('--primary',s.primary);document.documentElement.style.setProperty('--secondary',s.secondary);
- document.getElementById('loginBrandName').textContent=s.name;document.getElementById('loginSubtitle').textContent=s.subtitle;document.getElementById('topBrandName').textContent=s.name;
- const lb=document.getElementById('loginLogoBox'),tb=document.getElementById('topLogoBox');
- if(s.logo){lb.innerHTML='<img class="brand-logo" src="'+s.logo+'">';tb.innerHTML='<img src="'+s.logo+'">'}else{lb.innerHTML='<div class="brand-fallback">MC</div>';tb.innerHTML='MC'}
-}
-function login(username,password){
- if(username==='admin'&&password==='MercaCui2026'){currentUser={role:'admin',username:'admin',name:'Administrador General'};return enter()}
- const c=data.companies.find(x=>x.username===username&&x.password===password&&x.active);
- if(c){currentUser={role:'company',username:c.username,name:c.name,companyId:c.id};return enter()}
- const w=data.workers.find(x=>x.username===username&&x.password===password&&x.active);
- if(w){currentUser={role:'worker',username:w.username,name:w.name,id:w.id,companyId:w.companyId};return enter()}
- document.getElementById('loginMsg').textContent='Usuario, contraseña o estado incorrecto.'
-}
-function enter(){
- document.getElementById('loginScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');
- document.getElementById('currentUserLabel').textContent=currentUser.name+' · '+(currentUser.role==='admin'?'Administrador':currentUser.role==='company'?'Empresa':'Trabajador');
- document.getElementById('companyNav').classList.toggle('hidden',!isCompany());document.getElementById('adminNav').classList.toggle('hidden',!isAdmin());
- renderAll();showSection('inicio')
-}
-function logout(){if(gpsWatch!==null){navigator.geolocation.clearWatch(gpsWatch);gpsWatch=null}currentUser=null;document.getElementById('app').classList.add('hidden');document.getElementById('loginScreen').classList.remove('hidden');document.getElementById('loginPass').value=''}
-function showSection(name){
- document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById('section-'+name)?.classList.add('active');
- document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.section===name));
- if(name==='mercaruta')setTimeout(()=>initMap(),100)
-}
-function renderAll(){applyBrand();renderHome();renderSelects();renderRoutes();renderRest();renderTraining();renderNotifications();renderCompany();renderAdmin()}
+let usuarioActual = null;
 
-function renderHome(){
- const routes=visibleRoutes(), workers=isAdmin()?data.workers:isCompany()?visibleWorkers():[workerById(currentUser.id)];
- const rests=isWorker()?data.rests.filter(x=>x.workerIds.includes(currentUser.id)):isCompany()?data.rests.filter(x=>x.companyId===currentUser.companyId):data.rests;
- const trains=isWorker()?data.trainings.filter(x=>x.workerIds.includes(currentUser.id)):isCompany()?data.trainings.filter(x=>x.companyId===currentUser.companyId):data.trainings;
- document.getElementById('welcomeText').textContent='Bienvenido, '+currentUser.name+'.';
- document.getElementById('statsGrid').innerHTML=[
-  ['🛵','Rutas',routes.length],['👷','Trabajadores',workers.length],['🧘','Descansos',rests.length],['🎓','Capacitaciones',trains.length]
- ].map(x=>'<div class="card"><div>'+x[0]+' '+x[1]+'</div><div class="stat">'+x[2]+'</div></div>').join('');
- const ns=visibleNotifications().slice(0,5);document.getElementById('homeNotices').innerHTML=ns.length?ns.map(noticeHtml).join(''):'<div class="empty">No hay notificaciones.</div>'
-}
-function visibleNotifications(){
- if(isAdmin())return data.notifications;
- if(isCompany())return data.notifications.filter(n=>n.companyId===currentUser.companyId);
- return data.notifications.filter(n=>n.workerIds?.includes(currentUser.id)||n.companyId===currentUser.companyId)
-}
-function noticeHtml(n){return '<div class="notice '+esc(n.type||'')+'"><b>'+esc(n.title)+'</b><br><span>'+esc(n.message)+'</span><br><small>'+esc(n.date||'')+'</small></div>'}
+let mapa = null;
 
-function renderSelects(){
- const ws=visibleWorkers(), cs=isWorker()?data.companies.filter(c=>c.id===currentUser.companyId):isCompany()?data.companies.filter(c=>c.id===currentUser.companyId):data.companies;
- const pts=visiblePoints();
- const fill=(el,arr,label,selected='')=>{el.innerHTML=arr.map(x=>'<option value="'+x.id+'" '+(x.id===selected?'selected':'')+'>'+esc(label(x))+'</option>').join('')};
- fill(document.getElementById('routeWorker'),ws,w=>w.name+' ('+w.code+')',isWorker()?currentUser.id:'');
- fill(document.getElementById('routeCompany'),cs,c=>c.name+' ('+c.code+')',isCompany()?currentUser.companyId:'');
- const starts=pts.filter(p=>p.type==='inicio'||p.type==='encuentro'||p.type==='venta'),ends=pts.filter(p=>p.type==='destino'||p.type==='venta'||p.type==='encuentro');
- fill(document.getElementById('routeStart'),starts,p=>p.name);
- fill(document.getElementById('routeEnd'),ends,p=>p.name);
- if(isWorker()){document.getElementById('routeWorker').disabled=true;document.getElementById('routeCompany').disabled=true}
- else{document.getElementById('routeWorker').disabled=false;document.getElementById('routeCompany').disabled=false}
+let capaMarcadores = null;
+
+let capaRuta = null;
+
+let marcadorTrabajador = null;
+
+let intervaloRuta = null;
+
+let rutaActual = null;
+
+
+/* =========================================================
+   GUARDAR
+   ========================================================= */
+
+function guardar(){
+
+    localStorage.setItem(
+        "MERCACUI_DATOS",
+        JSON.stringify(datos)
+    );
+
 }
 
-function initMap(){
- if(!map){
-  map=L.map('map').setView([10.3993,-75.5027],12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
-  map.on('click',e=>{if(placingPoint)createPointAt(e.latlng.lat,e.latlng.lng)});
- }
- setTimeout(()=>map.invalidateSize(),50);renderMap()
-}
-function iconFor(type){
- const color={inicio:'#16834b',destino:'#1976d2',venta:'#d89b00',riesgo:'#c62828',descanso:'#7b1fa2',encuentro:'#333'}[type]||'#333';
- return L.divIcon({className:'',html:'<div style="width:24px;height:24px;border-radius:50%;background:'+color+';border:3px solid white;box-shadow:0 2px 8px #0006"></div>',iconSize:[24,24],iconAnchor:[12,12]})
-}
-function renderMap(){
- if(!map)return;
- Object.values(mapMarkers).forEach(m=>map.removeLayer(m));mapMarkers={};
- visiblePoints().forEach(p=>{
-  const m=L.marker([p.lat,p.lng],{icon:iconFor(p.type)}).addTo(map);
-  m.bindPopup('<b>'+esc(p.name)+'</b><br>'+typeLabel(p.type)+'<br><small>'+p.lat.toFixed(6)+', '+p.lng.toFixed(6)+'</small>');
-  m.on('click',()=>{selectedPointId=p.id;document.getElementById('selectedPointInfo').textContent='Seleccionado: '+p.name+' · '+p.lat.toFixed(6)+', '+p.lng.toFixed(6)});
-  mapMarkers[p.id]=m;
- });
- if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}
-}
-function createPointAt(lat,lng){
- const name=document.getElementById('pointName').value.trim()||'Punto sin nombre';
- const type=document.getElementById('pointType').value;
- const companyId=isCompany()?currentUser.companyId:(document.getElementById('routeCompany').value||data.companies[0]?.id||'');
- const p={id:id(),name,type,lat,lng,companyId};data.points.push(p);save();placingPoint=false;document.getElementById('placePointBtn').textContent='📍 Activar colocación';document.getElementById('pointName').value='';renderAll();initMap();map.setView([lat,lng],15);selectedPointId=p.id
-}
-function deleteSelectedPoint(){
- if(!selectedPointId)return alert('Selecciona primero un punto en el mapa.');
- const p=data.points.find(x=>x.id===selectedPointId);if(!p)return;
- if(!isAdmin()&&!isCompany())return alert('Solo administración o empresa pueden eliminar puntos.');
- if(isCompany()&&p.companyId!==currentUser.companyId)return alert('No puedes eliminar un punto de otra empresa.');
- if(!confirm('¿Eliminar '+p.name+'?'))return;
- data.points=data.points.filter(x=>x.id!==selectedPointId);selectedPointId=null;save();renderAll();initMap()
-}
-async function calculateRoute(){
- const a=data.points.find(p=>p.id===document.getElementById('routeStart').value),b=data.points.find(p=>p.id===document.getElementById('routeEnd').value);
- if(!a||!b)return alert('Selecciona un punto de inicio y uno de destino.');
- try{
-  const url='https://router.project-osrm.org/route/v1/driving/'+a.lng+','+a.lat+';'+b.lng+','+b.lat+'?overview=full&geometries=geojson';
-  const r=await fetch(url);const j=await r.json();if(!j.routes?.length)throw Error();
-  lastRoute=j.routes[0];if(routeLayer)map.removeLayer(routeLayer);
-  routeLayer=L.geoJSON(lastRoute.geometry,{style:{weight:6}}).addTo(map);map.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
-  alert('Ruta calculada: '+(lastRoute.distance/1000).toFixed(2)+' km · '+Math.round(lastRoute.duration/60)+' min.');
- }catch(e){alert('No se pudo calcular la ruta. Comprueba tu conexión a Internet y vuelve a intentarlo.')}
-}
-function saveRoute(){
- const name=document.getElementById('routeName').value.trim()||'Ruta '+new Date().toLocaleDateString();
- const workerId=document.getElementById('routeWorker').value,companyId=document.getElementById('routeCompany').value,startId=document.getElementById('routeStart').value,endId=document.getElementById('routeEnd').value;
- if(!workerId||!companyId||!startId||!endId)return alert('Completa trabajador, empresa, inicio y destino.');
- if(isCompany()&&companyId!==currentUser.companyId)return alert('Solo puedes crear rutas de tu empresa.');
- const existing=data.routes.find(r=>r.name===name&&r.workerId===workerId);
- const obj={id:existing?.id||id(),name,workerId,companyId,startId,endId,distance:lastRoute?.distance||null,duration:lastRoute?.duration||null};
- if(existing)Object.assign(existing,obj);else data.routes.push(obj);
- data.notifications.push({id:id(),type:'',title:'Nueva ruta asignada',message:name+' fue asignada.',companyId,workerIds:[workerId],date:new Date().toLocaleString()});
- save();renderAll();alert('Ruta guardada correctamente.')
-}
-function renderRoutes(){
- const rows=visibleRoutes();document.getElementById('routesTable').innerHTML=rows.length?rows.map(r=>{
-  const w=workerById(r.workerId),a=data.points.find(p=>p.id===r.startId),b=data.points.find(p=>p.id===r.endId);
-  return '<tr><td>'+esc(r.name)+'</td><td>'+esc(w?.name||'')+'</td><td>'+esc(a?.name||'')+'</td><td>'+esc(b?.name||'')+'</td><td><button class="btn small" onclick="openRoute(\''+r.id+'\')">Ver</button> '+(isAdmin()||isCompany()?'<button class="btn danger small" onclick="deleteRoute(\''+r.id+'\')">Eliminar</button>':'')+'</td></tr>'
- }).join(''):'<tr><td colspan="5" class="empty">No hay rutas guardadas.</td></tr>'
-}
-function openRoute(rid){const r=data.routes.find(x=>x.id===rid);if(!r)return;document.getElementById('routeWorker').value=r.workerId;document.getElementById('routeCompany').value=r.companyId;document.getElementById('routeStart').value=r.startId;document.getElementById('routeEnd').value=r.endId;document.getElementById('routeName').value=r.name;showSection('mercaruta');setTimeout(calculateRoute,150)}
-function deleteRoute(rid){const r=data.routes.find(x=>x.id===rid);if(!r||(!isAdmin()&&!isCompany()))return;if(isCompany()&&r.companyId!==currentUser.companyId)return;if(confirm('¿Eliminar esta ruta?')){data.routes=data.routes.filter(x=>x.id!==rid);save();renderAll();}}
-function startGPS(){
- if(!navigator.geolocation)return alert('Este navegador no permite GPS.');
- if(gpsWatch!==null){navigator.geolocation.clearWatch(gpsWatch);gpsWatch=null;document.getElementById('gpsBtn').textContent='📍 Mi ubicación';return}
- gpsWatch=navigator.geolocation.watchPosition(pos=>{
-  const {latitude,longitude}=pos.coords;if(!map)return;
-  if(!gpsMarker)gpsMarker=L.marker([latitude,longitude]).addTo(map).bindPopup('Ubicación del trabajador');
-  gpsMarker.setLatLng([latitude,longitude]);map.setView([latitude,longitude],15);
- },()=>alert('No fue posible obtener tu ubicación. Revisa los permisos del navegador.'),{enableHighAccuracy:true,maximumAge:5000,timeout:10000});
- document.getElementById('gpsBtn').textContent='⛔ Detener GPS'
-}
-function openGoogleMaps(){
- const a=data.points.find(p=>p.id===document.getElementById('routeStart').value),b=data.points.find(p=>p.id===document.getElementById('routeEnd').value);
- if(!a||!b)return alert('Selecciona inicio y destino.');
- const url='https://www.google.com/maps/dir/?api=1&origin='+a.lat+','+a.lng+'&destination='+b.lat+','+b.lng+'&travelmode=driving';
- window.open(url,'_blank')
+
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+
+function id(){
+
+    return Date.now().toString()
+    + Math.random().toString(36).substring(2);
+
 }
 
-function renderRest(){
- const arr=isWorker()?data.rests.filter(x=>x.workerIds.includes(currentUser.id)):isCompany()?data.rests.filter(x=>x.companyId===currentUser.companyId):data.rests;
- document.getElementById('restCards').innerHTML=arr.length?arr.map(x=>'<div class="card"><h3>🧘 '+esc(x.title)+'</h3><p>'+esc(x.message)+'</p><p><b>Fecha:</b> '+esc(x.date)+'<br><b>Hora:</b> '+esc(x.time)+'<br><b>Duración:</b> '+esc(x.minutes)+' minutos</p></div>').join(''):'<div class="empty">No hay descansos programados.</div>'
-}
-function renderTraining(){
- const arr=isWorker()?data.trainings.filter(x=>x.workerIds.includes(currentUser.id)):isCompany()?data.trainings.filter(x=>x.companyId===currentUser.companyId):data.trainings;
- document.getElementById('trainingCards').innerHTML=arr.length?arr.map(x=>'<div class="card"><h3>🎓 '+esc(x.title)+'</h3><p>'+esc(x.topic)+'</p><p><b>Fecha:</b> '+esc(x.date)+'<br><b>Hora:</b> '+esc(x.time)+'<br><b>Lugar:</b> '+esc(x.place)+'</p></div>').join(''):'<div class="empty">No hay capacitaciones programadas.</div>'
-}
-function renderNotifications(){document.getElementById('notificationsList').innerHTML=visibleNotifications().length?visibleNotifications().slice().reverse().map(noticeHtml).join(''):'<div class="empty">No hay notificaciones.</div>'}
 
-function renderCompany(){
- if(!isCompany())return;
- document.getElementById('companyWorkersTable').innerHTML=visibleWorkers().map(w=>'<tr><td>'+esc(w.name)+'</td><td>'+esc(w.username)+'</td><td>'+esc(w.code)+'</td><td><button class="btn small" onclick="editWorker(\''+w.id+'\')">Editar</button> <button class="btn danger small" onclick="deleteWorker(\''+w.id+'\')">Eliminar</button></td></tr>').join('');
- document.getElementById('companyPointsTable').innerHTML=visiblePoints().map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+typeLabel(p.type)+'</td><td>'+p.lat.toFixed(6)+', '+p.lng.toFixed(6)+'</td><td><button class="btn danger small" onclick="deletePointById(\''+p.id+'\')">Eliminar</button></td></tr>').join('');
-}
-function renderAdmin(){
- if(!isAdmin())return;
- document.getElementById('settingName').value=data.settings.name;document.getElementById('settingSubtitle').value=data.settings.subtitle;document.getElementById('settingPrimary').value=data.settings.primary;document.getElementById('settingSecondary').value=data.settings.secondary;
- document.getElementById('adminStats').innerHTML=[['🏢','Empresas',data.companies.length],['👷','Trabajadores',data.workers.length],['📍','Puntos',data.points.length],['🗺️','Rutas',data.routes.length]].map(x=>'<div class="card"><div>'+x[0]+' '+x[1]+'</div><div class="stat">'+x[2]+'</div></div>').join('');
- document.getElementById('companiesTable').innerHTML=data.companies.map(c=>'<tr><td>'+esc(c.name)+'</td><td>'+esc(c.username)+'</td><td>'+esc(c.code)+'</td><td>'+data.workers.filter(w=>w.companyId===c.id).length+'</td><td><button class="btn small" onclick="editCompany(\''+c.id+'\')">Editar</button> <button class="btn danger small" onclick="deleteCompany(\''+c.id+'\')">Eliminar</button></td></tr>').join('');
- document.getElementById('workersTable').innerHTML=data.workers.map(w=>'<tr><td>'+esc(w.name)+'</td><td>'+esc(w.username)+'</td><td>'+esc(w.code)+'</td><td>'+esc(companyById(w.companyId)?.name||'')+'</td><td><button class="btn small" onclick="editWorker(\''+w.id+'\')">Editar</button> <button class="btn danger small" onclick="deleteWorker(\''+w.id+'\')">Eliminar</button></td></tr>').join('');
- document.getElementById('pointsTable').innerHTML=data.points.map(p=>'<tr><td>'+esc(p.name)+'</td><td>'+typeLabel(p.type)+'</td><td>'+esc(companyById(p.companyId)?.name||'')+'</td><td>'+p.lat.toFixed(6)+', '+p.lng.toFixed(6)+'</td><td><button class="btn small" onclick="goPoint(\''+p.id+'\')">Ver</button> <button class="btn danger small" onclick="deletePointById(\''+p.id+'\')">Eliminar</button></td></tr>').join('');
- document.getElementById('adminSchedules').innerHTML='<h4>Descansos</h4>'+ (data.rests.length?data.rests.map((x,i)=>'<div class="notice rest">'+esc(x.title)+' · '+esc(x.date)+' '+esc(x.time)+' <button class="btn danger small" onclick="deleteRest('+i+')">Eliminar</button></div>').join(''):'<div class="empty">Sin descansos.</div>')+'<h4>Capacitaciones</h4>'+ (data.trainings.length?data.trainings.map((x,i)=>'<div class="notice training">'+esc(x.title)+' · '+esc(x.date)+' '+esc(x.time)+' <button class="btn danger small" onclick="deleteTraining('+i+')">Eliminar</button></div>').join(''):'<div class="empty">Sin capacitaciones.</div>')
+function escapar(texto){
+
+    return String(texto || "")
+    .replace(/[&<>"']/g,function(c){
+
+        return {
+
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+
+        }[c];
+
+    });
+
 }
 
-function modal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('show')}
-function closeModal(){document.getElementById('modal').classList.remove('show')}
-function companyForm(c={}){
- modal(c.id?'Editar empresa':'Crear empresa',`<div class="field"><label>Nombre</label><input id="fName" value="${esc(c.name||'')}"></div><div class="field"><label>Usuario</label><input id="fUser" value="${esc(c.username||'')}"></div><div class="field"><label>Contraseña</label><input id="fPass" value="${esc(c.password||'1234')}"></div><div class="field"><label>Código</label><input id="fCode" value="${esc(c.code||'EMP-'+String(data.companies.length+1).padStart(3,'0'))}"></div><div class="actions"><button class="btn" onclick="saveCompany('${c.id||''}')">Guardar</button></div>`)
-}
-function saveCompany(cid){const obj={id:cid||id(),name:document.getElementById('fName').value.trim(),username:document.getElementById('fUser').value.trim(),password:document.getElementById('fPass').value,code:document.getElementById('fCode').value.trim(),active:true};if(!obj.name||!obj.username)return alert('Nombre y usuario son obligatorios.');if(data.companies.some(c=>c.username===obj.username&&c.id!==obj.id)||data.workers.some(w=>w.username===obj.username))return alert('Ese usuario ya existe.');const old=data.companies.find(c=>c.id===cid);if(old)Object.assign(old,obj);else data.companies.push(obj);save();closeModal();renderAll()}
-function workerForm(w={}){
- const opts=data.companies.map(c=>'<option value="'+c.id+'" '+(c.id===w.companyId?'selected':'')+'>'+esc(c.name)+'</option>').join('');
- modal(w.id?'Editar trabajador':'Crear trabajador',`<div class="field"><label>Nombre completo</label><input id="fName" value="${esc(w.name||'')}"></div><div class="field"><label>Usuario</label><input id="fUser" value="${esc(w.username||'')}"></div><div class="field"><label>Contraseña</label><input id="fPass" value="${esc(w.password||'1234')}"></div><div class="field"><label>Código</label><input id="fCode" value="${esc(w.code||'MER-'+String(data.workers.length+1).padStart(3,'0'))}"></div><div class="field"><label>Empresa</label><select id="fCompany">${opts}</select></div><div class="actions"><button class="btn" onclick="saveWorker('${w.id||''}')">Guardar</button></div>`)
-}
-function saveWorker(wid){
- const obj={id:wid||id(),name:document.getElementById('fName').value.trim(),username:document.getElementById('fUser').value.trim(),password:document.getElementById('fPass').value,code:document.getElementById('fCode').value.trim(),companyId:document.getElementById('fCompany').value,active:true};
- if(!obj.name||!obj.username||!obj.companyId)return alert('Completa los campos obligatorios.');
- if(data.companies.some(c=>c.username===obj.username)||data.workers.some(w=>w.username===obj.username&&w.id!==obj.id)||obj.username==='admin')return alert('Ese usuario ya existe.');
- const old=data.workers.find(w=>w.id===wid);if(old)Object.assign(old,obj);else data.workers.push(obj);save();closeModal();renderAll()
-}
-function editCompany(cid){if(isAdmin())companyForm(data.companies.find(c=>c.id===cid))}
-function editWorker(wid){const w=data.workers.find(x=>x.id===wid);if(!w)return;if(isCompany()&&w.companyId!==currentUser.companyId)return;workerForm(w)}
-function deleteCompany(cid){
- if(!isAdmin())return;const c=data.companies.find(x=>x.id===cid);if(!c)return;if(!confirm('¿Eliminar la empresa '+c.name+'? También se eliminarán sus trabajadores, puntos y rutas.'))return;
- const ws=data.workers.filter(w=>w.companyId===cid).map(w=>w.id);data.workers=data.workers.filter(w=>w.companyId!==cid);data.points=data.points.filter(p=>p.companyId!==cid);data.routes=data.routes.filter(r=>r.companyId!==cid);data.rests=data.rests.filter(r=>r.companyId!==cid);data.trainings=data.trainings.filter(t=>t.companyId!==cid);data.notifications=data.notifications.filter(n=>n.companyId!==cid);data.companies=data.companies.filter(x=>x.id!==cid);save();renderAll()
-}
-function deleteWorker(wid){
- const w=data.workers.find(x=>x.id===wid);if(!w)return;if(!isAdmin()&&!isCompany())return;if(isCompany()&&w.companyId!==currentUser.companyId)return;if(!confirm('¿Eliminar a '+w.name+'?'))return;
- data.workers=data.workers.filter(x=>x.id!==wid);data.routes=data.routes.filter(r=>r.workerId!==wid);data.rests.forEach(r=>r.workerIds=r.workerIds.filter(x=>x!==wid));data.trainings.forEach(t=>t.workerIds=t.workerIds.filter(x=>x!==wid));data.notifications.forEach(n=>{if(n.workerIds)n.workerIds=n.workerIds.filter(x=>x!==wid)});save();renderAll()
-}
-function deletePointById(pid){const p=data.points.find(x=>x.id===pid);if(!p)return;if(!isAdmin()&&!isCompany())return;if(isCompany()&&p.companyId!==currentUser.companyId)return;if(confirm('¿Eliminar '+p.name+'?')){data.points=data.points.filter(x=>x.id!==pid);data.routes=data.routes.filter(r=>r.startId!==pid&&r.endId!==pid);save();renderAll();if(document.getElementById('section-mercaruta').classList.contains('active'))initMap()}}
-function goPoint(pid){const p=data.points.find(x=>x.id===pid);if(!p)return;showSection('mercaruta');setTimeout(()=>{initMap();map.setView([p.lat,p.lng],17);mapMarkers[p.id]?.openPopup()},120)}
 
-function scheduleForm(kind){
- const workers=visibleWorkers();if(!workers.length)return alert('No hay trabajadores.');
- const opts=workers.map(w=>'<option value="'+w.id+'">'+esc(w.name)+'</option>').join('');
- if(kind==='rest')modal('Crear descanso',`<div class="field"><label>Título</label><input id="fTitle" value="Pausa activa"></div><div class="field"><label>Mensaje</label><textarea id="fMessage">Realiza tu pausa activa.</textarea></div><div class="field"><label>Fecha</label><input id="fDate" type="date"></div><div class="field"><label>Hora</label><input id="fTime" type="time"></div><div class="field"><label>Duración (minutos)</label><input id="fMinutes" type="number" value="20"></div><div class="field"><label>Trabajadores</label><select id="fWorkers" multiple size="5">${opts}</select></div><button class="btn" onclick="saveRest()">Guardar descanso</button>`);
- else modal('Crear capacitación',`<div class="field"><label>Título</label><input id="fTitle" value="Capacitación MercaCui"></div><div class="field"><label>Tema</label><input id="fTopic" value="Seguridad y salud en el trabajo"></div><div class="field"><label>Fecha</label><input id="fDate" type="date"></div><div class="field"><label>Hora</label><input id="fTime" type="time"></div><div class="field"><label>Lugar</label><input id="fPlace" value="Sede MercaCui"></div><div class="field"><label>Trabajadores</label><select id="fWorkers" multiple size="5">${opts}</select></div><button class="btn" onclick="saveTraining()">Guardar capacitación</button>`);
-}
-function selectedWorkers(){return [...document.getElementById('fWorkers').selectedOptions].map(o=>o.value)}
-function saveRest(){const ws=selectedWorkers();if(!ws.length)return alert('Selecciona al menos un trabajador.');const companyId=companyById(workerById(ws[0]).companyId)?.id;const x={id:id(),title:document.getElementById('fTitle').value,message:document.getElementById('fMessage').value,date:document.getElementById('fDate').value,time:document.getElementById('fTime').value,minutes:document.getElementById('fMinutes').value,workerIds:ws,companyId};data.rests.push(x);data.notifications.push({id:id(),type:'rest',title:'Nueva pausa activa',message:x.title+' · '+x.minutes+' minutos.',companyId,workerIds:ws,date:new Date().toLocaleString()});save();closeModal();renderAll()}
-function saveTraining(){const ws=selectedWorkers();if(!ws.length)return alert('Selecciona al menos un trabajador.');const companyId=workerById(ws[0]).companyId;const x={id:id(),title:document.getElementById('fTitle').value,topic:document.getElementById('fTopic').value,date:document.getElementById('fDate').value,time:document.getElementById('fTime').value,place:document.getElementById('fPlace').value,workerIds:ws,companyId};data.trainings.push(x);data.notifications.push({id:id(),type:'training',title:'Nueva capacitación',message:x.title+' · '+x.topic,date:new Date().toLocaleString(),companyId,workerIds:ws});save();closeModal();renderAll()}
-function deleteRest(i){if(!isAdmin())return;if(confirm('¿Eliminar descanso?')){data.rests.splice(i,1);save();renderAll()}}
-function deleteTraining(i){if(!isAdmin())return;if(confirm('¿Eliminar capacitación?')){data.trainings.splice(i,1);save();renderAll()}}
+function mostrarToast(mensaje){
 
-document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();login(document.getElementById('loginUser').value.trim(),document.getElementById('loginPass').value)})
-document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{const x=b.dataset.demo;document.getElementById('loginUser').value=x;document.getElementById('loginPass').value=x==='admin'?'MercaCui2026':'1234'}))
-document.getElementById('logoutBtn').onclick=logout;
-document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>showSection(b.dataset.section)));
-document.getElementById('placePointBtn').onclick=()=>{placingPoint=!placingPoint;document.getElementById('placePointBtn').textContent=placingPoint?'🖱️ Haz clic en el mapa':'📍 Activar colocación';showSection('mercaruta');setTimeout(initMap,100)};
-document.getElementById('deletePointBtn').onclick=deleteSelectedPoint;
-document.getElementById('calculateRouteBtn').onclick=calculateRoute;
-document.getElementById('saveRouteBtn').onclick=saveRoute;
-document.getElementById('gpsBtn').onclick=startGPS;
-document.getElementById('googleRouteBtn').onclick=openGoogleMaps;
-document.getElementById('modalClose').onclick=closeModal;
-document.getElementById('addCompanyBtn').onclick=()=>companyForm();
-document.getElementById('addWorkerBtn').onclick=()=>workerForm();
-document.getElementById('companyAddWorker').onclick=()=>workerForm({companyId:currentUser.companyId});
-document.getElementById('addRestBtn').onclick=()=>scheduleForm('rest');
-document.getElementById('addTrainingBtn').onclick=()=>scheduleForm('training');
-document.getElementById('adminMapBtn').onclick=()=>showSection('mercaruta');
-document.getElementById('saveBrandBtn').onclick=()=>{
- data.settings.name=document.getElementById('settingName').value.trim()||'MercaCui';data.settings.subtitle=document.getElementById('settingSubtitle').value.trim();
- data.settings.primary=document.getElementById('settingPrimary').value;data.settings.secondary=document.getElementById('settingSecondary').value;save();applyBrand();alert('Apariencia guardada.')
-};
-document.getElementById('removeLogoBtn').onclick=()=>{data.settings.logo='';save();applyBrand();document.getElementById('logoInput').value=''};
-document.getElementById('logoInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>{data.settings.logo=reader.result;applyBrand()};reader.readAsDataURL(f)});
-applyBrand();
+    const toast =
+    document.getElementById("toast");
+
+    toast.textContent = mensaje;
+
+    toast.classList.add("show");
+
+    setTimeout(function(){
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+function empresaActual(){
+
+    if(!usuarioActual){
+        return null;
+    }
+
+    return datos.empresas.find(
+        e => e.id === usuarioActual.empresaId
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const usuario =
+    document.getElementById("username")
+    .value.trim();
+
+    const password =
+    document.getElementById("password")
+    .value;
+
+    let encontrado = null;
+
+    if(
+        usuario === "admin" &&
+        password === "MercaCui2026"
+    ){
+
+        encontrado = {
+
+            id:"admin",
+            nombre:"Administrador General",
+            usuario:"admin",
+            rol:"admin"
+
+        };
+
+    }
+
+    else if(
+        usuario === "empresa" &&
+        password === "1234"
+    ){
+
+        encontrado = {
+
+            id:"empresaUser",
+            nombre:"Empresa Demo",
+            usuario:"empresa",
+            rol:"empresa",
+            empresaId:"empresa1"
+
+        };
+
+    }
+
+    else{
+
+        encontrado =
+        datos.trabajadores.find(
+
+            t =>
+            t.usuario === usuario &&
+            t.password === password
+
+        );
+
+        if(encontrado){
+
+            encontrado.rol = "trabajador";
+
+        }
+
+    }
+
+
+    if(!encontrado){
+
+        mostrarToast(
+            "Usuario o contraseña incorrectos"
+        );
+
+        return;
+
+    }
+
+
+    usuarioActual = encontrado;
+
+    document
+    .getElementById("login")
+    .classList.add("hidden");
+
+    document
+    .getElementById("app")
+    .classList.remove("hidden");
+
+
+    document
+    .getElementById("roleText")
+    .textContent =
+    obtenerNombreRol(encontrado.rol);
+
+
+    construirMenu();
+
+    mostrarPagina("inicio");
+
+});
+
+
+function obtenerNombreRol(rol){
+
+    if(rol === "admin")
+        return "Administrador general";
+
+    if(rol === "empresa")
+        return "Empresa";
+
+    return "Trabajador";
+
+}
+
+
+function cerrarSesion(){
+
+    usuarioActual = null;
+
+    if(intervaloRuta)
+        clearInterval(intervaloRuta);
+
+    document
+    .getElementById("app")
+    .classList.add("hidden");
+
+    document
+    .getElementById("login")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   MENÚ
+   ========================================================= */
+
+function construirMenu(){
+
+    const sidebar =
+    document.getElementById("sidebar");
+
+    let html = "";
+
+
+    if(usuarioActual.rol === "admin"){
+
+        html += `
+        <div class="sidebar-title">
+        Administración
+        </div>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('inicio')">
+        🏠 Inicio
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('empresas')">
+        🏢 Empresas
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('trabajadores')">
+        👥 Trabajadores
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('rutas')">
+        🛣️ Rutas
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('puntos')">
+        📍 Puntos
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('descansos')">
+        🧘 MercaDes
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('capacitaciones')">
+        🎓 MercaCap
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('solicitudes')">
+        📨 Solicitudes
+        </button>
+        `;
+
+    }
+
+
+    if(usuarioActual.rol === "empresa"){
+
+        html += `
+        <div class="sidebar-title">
+        Mi empresa
+        </div>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('inicio')">
+        🏠 Inicio
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('trabajadores')">
+        👥 Trabajadores
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('rutas')">
+        🛣️ Rutas
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('puntos')">
+        📍 Puntos
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('descansos')">
+        🧘 MercaDes
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('capacitaciones')">
+        🎓 MercaCap
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('solicitudes')">
+        📨 Solicitudes
+        </button>
+        `;
+
+    }
+
+
+    if(usuarioActual.rol === "trabajador"){
+
+        html += `
+        <div class="sidebar-title">
+        Seguridad
+        </div>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('inicio')">
+        🏠 Mi panel
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('miRuta')">
+        🛵 Mi ruta
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('descansos')">
+        🧘 MercaDes
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('capacitaciones')">
+        🎓 MercaCap
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('notificaciones')">
+        🔔 Notificaciones
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('solicitudes')">
+        📨 Quejas / Solicitudes
+        </button>
+
+        <button class="nav-button"
+        onclick="mostrarPagina('proponerPunto')">
+        📍 Proponer punto
+        </button>
+        `;
+
+    }
+
+
+    sidebar.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+
+function mostrarPagina(pagina){
+
+    const content =
+    document.getElementById("content");
+
+    if(pagina === "inicio")
+        paginaInicio(content);
+
+    if(pagina === "empresas")
+        paginaEmpresas(content);
+
+    if(pagina === "trabajadores")
+        paginaTrabajadores(content);
+
+    if(pagina === "rutas")
+        paginaRutas(content);
+
+    if(pagina === "puntos")
+        paginaPuntos(content);
+
+    if(pagina === "descansos")
+        paginaDescansos(content);
+
+    if(pagina === "capacitaciones")
+        paginaCapacitaciones(content);
+
+    if(pagina === "solicitudes")
+        paginaSolicitudes(content);
+
+    if(pagina === "miRuta")
+        paginaMiRuta(content);
+
+    if(pagina === "notificaciones")
+        paginaNotificaciones(content);
+
+    if(pagina === "proponerPunto")
+        paginaProponerPunto(content);
+
+}
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+function paginaInicio(content){
+
+    const rutas =
+    usuarioActual.rol === "trabajador"
+
+    ? datos.rutas.filter(
+        r => r.trabajadorId === usuarioActual.id
+      )
+
+    : usuarioActual.rol === "empresa"
+
+    ? datos.rutas.filter(
+        r => r.empresaId === usuarioActual.empresaId
+      )
+
+    : datos.rutas;
+
+
+    const solicitudes =
+    usuarioActual.rol === "trabajador"
+
+    ? datos.solicitudes.filter(
+        s => s.trabajadorId === usuarioActual.id
+      )
+
+    : datos.solicitudes.filter(
+        s => s.estado === "Pendiente"
+      );
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            ${
+                usuarioActual.rol === "trabajador"
+                ? "Mi panel de seguridad"
+                : "Panel de control"
+            }
+            </h2>
+
+            <p>
+            Bienvenido, ${escapar(usuarioActual.nombre)}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid">
+
+        <div class="card stat">
+
+            <strong>
+            ${rutas.length}
+            </strong>
+
+            <span>
+            Rutas
+            </span>
+
+        </div>
+
+
+        <div class="card stat">
+
+            <strong>
+            ${solicitudes.length}
+            </strong>
+
+            <span>
+            Solicitudes
+            </span>
+
+        </div>
+
+
+        <div class="card stat">
+
+            <strong>
+            ${
+                datos.puntos.filter(
+                    p => p.estado === "Aprobado"
+                ).length
+            }
+            </strong>
+
+            <span>
+            Puntos aprobados
+            </span>
+
+        </div>
+
+
+        <div class="card stat">
+
+            <strong>
+            ${datos.capacitaciones.length}
+            </strong>
+
+            <span>
+            Capacitaciones
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid section">
+
+        <div class="card">
+
+            <h3>
+            🛵 MercaRuta
+            </h3>
+
+            <p>
+            Rutas seguras y verificadas para
+            el desplazamiento del mercaderista.
+            </p>
+
+            <br>
+
+            <button
+            class="btn-primary"
+            onclick="mostrarPagina('${
+                usuarioActual.rol === "trabajador"
+                ? "miRuta"
+                : "rutas"
+            }')">
+
+            Abrir MercaRuta
+
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+            🧘 MercaDes
+            </h3>
+
+            <p>
+            Descansos y pausas activas.
+            </p>
+
+            <br>
+
+            <button
+            class="btn-secondary"
+            onclick="mostrarPagina('descansos')">
+
+            Ver MercaDes
+
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+            🎓 MercaCap
+            </h3>
+
+            <p>
+            Formación y capacitación preventiva.
+            </p>
+
+            <br>
+
+            <button
+            class="btn-secondary"
+            onclick="mostrarPagina('capacitaciones')">
+
+            Ver MercaCap
+
+            </button>
+
+        </div>
+
+
+        ${
+            usuarioActual.rol === "trabajador"
+
+            ? `
+
+            <div class="card">
+
+                <h3>
+                📨 MercaSolicitudes
+                </h3>
+
+                <p>
+                Envía quejas, solicitudes,
+                reclamos y propuestas.
+                </p>
+
+                <br>
+
+                <button
+                class="btn-secondary"
+                onclick="mostrarPagina('solicitudes')">
+
+                Enviar solicitud
+
+                </button>
+
+            </div>
+
+            `
+
+            : ""
+
+        }
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   EMPRESAS
+   ========================================================= */
+
+function paginaEmpresas(content){
+
+    if(usuarioActual.rol !== "admin")
+        return;
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            Empresas
+            </h2>
+
+            <p>
+            Administración general
+            </p>
+
+        </div>
+
+        <div class="actions">
+
+            <button
+            class="btn-primary"
+            onclick="formEmpresa()">
+
+            + Nueva empresa
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card table-container">
+
+    <table>
+
+    <thead>
+
+    <tr>
+
+    <th>Empresa</th>
+    <th>Código</th>
+    <th>Contacto</th>
+    <th>Acciones</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    ${
+        datos.empresas.map(e => `
+
+        <tr>
+
+        <td>
+        ${escapar(e.nombre)}
+        </td>
+
+        <td>
+        ${escapar(e.codigo)}
+        </td>
+
+        <td>
+        ${escapar(e.contacto)}
+        </td>
+
+        <td>
+
+        <button
+        class="btn-danger"
+        onclick="eliminarEmpresa('${e.id}')">
+
+        Eliminar
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `).join("")
+    }
+
+    </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   TRABAJADORES
+   ========================================================= */
+
+function paginaTrabajadores(content){
+
+    let lista = datos.trabajadores;
+
+
+    if(usuarioActual.rol === "empresa"){
+
+        lista =
+        lista.filter(
+            t => t.empresaId === usuarioActual.empresaId
+        );
+
+    }
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            Trabajadores
+            </h2>
+
+            <p>
+            Gestión de trabajadores
+            </p>
+
+        </div>
+
+        <button
+        class="btn-primary"
+        onclick="formTrabajador()">
+
+        + Nuevo trabajador
+
+        </button>
+
+    </div>
+
+
+    <div class="card table-container">
+
+    <table>
+
+    <thead>
+
+    <tr>
+
+    <th>Nombre</th>
+    <th>Usuario</th>
+    <th>Empresa</th>
+    <th>Acciones</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    ${
+        lista.map(t => `
+
+        <tr>
+
+        <td>
+        ${escapar(t.nombre)}
+        </td>
+
+        <td>
+        ${escapar(t.usuario)}
+        </td>
+
+        <td>
+        ${
+            datos.empresas.find(
+                e => e.id === t.empresaId
+            )?.nombre || "—"
+        }
+        </td>
+
+        <td>
+
+        <button
+        class="btn-danger"
+        onclick="eliminarTrabajador('${t.id}')">
+
+        Eliminar
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `).join("")
+    }
+
+    </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   RUTAS
+   ========================================================= */
+
+function paginaRutas(content){
+
+    let lista = datos.rutas;
+
+
+    if(usuarioActual.rol === "empresa"){
+
+        lista =
+        lista.filter(
+            r => r.empresaId === usuarioActual.empresaId
+        );
+
+    }
+
+
+    if(usuarioActual.rol === "trabajador"){
+
+        lista =
+        lista.filter(
+            r => r.trabajadorId === usuarioActual.id
+        );
+
+    }
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            MercaRuta
+            </h2>
+
+            <p>
+            Rutas seguras y verificadas
+            </p>
+
+        </div>
+
+        ${
+            usuarioActual.rol !== "trabajador"
+
+            ? `
+
+            <button
+            class="btn-primary"
+            onclick="formRuta()">
+
+            + Nueva ruta
+
+            </button>
+
+            `
+
+            : ""
+
+        }
+
+    </div>
+
+
+    <div class="card table-container">
+
+    <table>
+
+    <thead>
+
+    <tr>
+
+    <th>Ruta</th>
+    <th>Inicio</th>
+    <th>Destino</th>
+    <th>Trabajador</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    ${
+        lista.map(r => `
+
+        <tr>
+
+        <td>
+        ${escapar(r.nombre)}
+        </td>
+
+        <td>
+        ${escapar(r.inicio)}
+        </td>
+
+        <td>
+        ${escapar(r.destino)}
+        </td>
+
+        <td>
+
+        ${
+            datos.trabajadores.find(
+                t => t.id === r.trabajadorId
+            )?.nombre || "Sin asignar"
+        }
+
+        </td>
+
+        <td>
+
+        <span class="badge ${
+            r.estado === "Activa"
+            ? "green"
+            : ""
+        }">
+
+        ${escapar(r.estado)}
+
+        </span>
+
+        </td>
+
+        <td>
+
+        ${
+            usuarioActual.rol === "trabajador"
+
+            ? `
+
+            <button
+            class="btn-primary"
+            onclick="abrirRutaTrabajador('${r.id}')">
+
+            Abrir
+
+            </button>
+
+            `
+
+            : `
+
+            <button
+            class="btn-danger"
+            onclick="eliminarRuta('${r.id}')">
+
+            Eliminar
+
+            </button>
+
+            `
+
+        }
+
+        </td>
+
+        </tr>
+
+        `).join("")
+    }
+
+    </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MI RUTA
+   ========================================================= */
+
+function paginaMiRuta(content){
+
+    const ruta =
+    datos.rutas.find(
+        r => r.trabajadorId === usuarioActual.id
+    );
+
+
+    if(!ruta){
+
+        content.innerHTML = `
+
+        <div class="card">
+
+        <h2>
+        🛵 Mi ruta
+        </h2>
+
+        <p>
+        No tienes una ruta asignada actualmente.
+        </p>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    rutaActual = ruta;
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            🛵 Mi ruta
+            </h2>
+
+            <p>
+            Ruta establecida por la empresa.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+        ${escapar(ruta.nombre)}
+        </h3>
+
+        <div class="route-info">
+
+            <div class="route-point start">
+
+                <strong>
+                🟢 Inicio
+                </strong>
+
+                <br>
+
+                ${escapar(ruta.inicio)}
+
+            </div>
+
+
+            <div class="route-point end">
+
+                <strong>
+                🔵 Destino
+                </strong>
+
+                <br>
+
+                ${escapar(ruta.destino)}
+
+            </div>
+
+        </div>
+
+
+        <div id="map"></div>
+
+
+        <div class="route-actions">
+
+            <button
+            class="btn-green"
+            onclick="iniciarRuta()">
+
+            🛵 Iniciar ruta
+
+            </button>
+
+
+            <button
+            class="btn-secondary"
+            onclick="pausarRuta()">
+
+            ⏸ Pausar
+
+            </button>
+
+
+            <button
+            class="btn-secondary"
+            onclick="finalizarRuta()">
+
+            🏁 Finalizar
+
+            </button>
+
+
+            <button
+            class="btn-secondary"
+            onclick="obtenerGPS()">
+
+            📍 Mi GPS
+
+            </button>
+
+
+            <button
+            class="btn-secondary"
+            onclick="abrirGoogleMaps()">
+
+            Google Maps
+
+            </button>
+
+        </div>
+
+
+        <br>
+
+        <p>
+
+        <strong>
+        Importante:
+        </strong>
+
+        El trabajador puede ejecutar la ruta,
+        pero no puede modificar el inicio,
+        destino ni recorrido establecido
+        por la empresa.
+
+        </p>
+
+    </div>
+
+    `;
+
+
+    iniciarMapa();
+
+    dibujarRuta(ruta);
+
+}
+
+
+/* =========================================================
+   MAPA
+   ========================================================= */
+
+function iniciarMapa(){
+
+    if(mapa){
+
+        mapa.remove();
+
+        mapa = null;
+
+    }
+
+
+    mapa =
+    L.map("map")
+    .setView(CARTAGENA,13);
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom:19,
+            attribution:"© OpenStreetMap"
+        }
+    ).addTo(mapa);
+
+
+    capaMarcadores =
+    L.layerGroup()
+    .addTo(mapa);
+
+}
+
+
+/* =========================================================
+   DIBUJAR RUTA
+   ========================================================= */
+
+async function dibujarRuta(ruta){
+
+    if(!mapa)
+        return;
+
+
+    capaMarcadores.clearLayers();
+
+
+    L.marker([
+        ruta.inicioLat,
+        ruta.inicioLng
+    ])
+    .addTo(capaMarcadores)
+    .bindPopup(
+        "🟢 Inicio: "
+        + escapar(ruta.inicio)
+    );
+
+
+    L.marker([
+        ruta.destinoLat,
+        ruta.destinoLng
+    ])
+    .addTo(capaMarcadores)
+    .bindPopup(
+        "🔵 Destino: "
+        + escapar(ruta.destino)
+    );
+
+
+    datos.puntos
+    .filter(
+        p =>
+        p.estado === "Aprobado" &&
+        (
+            p.rutaId === ruta.id ||
+            p.empresaId === ruta.empresaId
+        )
+    )
+    .forEach(p => {
+
+        let icono = "📍";
+
+        if(p.tipo === "riesgo")
+            icono = "🔴";
+
+        if(p.tipo === "descanso")
+            icono = "🟣";
+
+        if(p.tipo === "venta")
+            icono = "🟢";
+
+        if(p.tipo === "reunion")
+            icono = "🟠";
+
+
+        L.marker([
+            p.lat,
+            p.lng
+        ])
+        .addTo(capaMarcadores)
+        .bindPopup(
+            `<strong>
+            ${icono} ${escapar(p.nombre)}
+            </strong>
+            <br>
+            ${escapar(p.descripcion)}
+            `
+        );
+
+    });
+
+
+    try{
+
+        const url =
+        `https://router.project-osrm.org/route/v1/driving/`+
+        `${ruta.inicioLng},${ruta.inicioLat};`+
+        `${ruta.destinoLng},${ruta.destinoLat}`+
+        `?overview=full&geometries=geojson`;
+
+
+        const respuesta =
+        await fetch(url);
+
+
+        const resultado =
+        await respuesta.json();
+
+
+        if(
+            resultado.routes &&
+            resultado.routes.length
+        ){
+
+            const r =
+            resultado.routes[0];
+
+
+            ruta.geometria =
+            r.geometry.coordinates.map(
+                punto => [
+                    punto[1],
+                    punto[0]
+                ]
+            );
+
+
+            ruta.distancia =
+            r.distance;
+
+
+            ruta.duracion =
+            r.duration;
+
+
+            guardar();
+
+
+            if(capaRuta)
+                capaRuta.remove();
+
+
+            capaRuta =
+            L.polyline(
+                ruta.geometria,
+                {
+                    color:"#0879e8",
+                    weight:6
+                }
+            )
+            .addTo(mapa);
+
+
+            mapa.fitBounds(
+                capaRuta.getBounds(),
+                {
+                    padding:[25,25]
+                }
+            );
+
+        }
+
+    }
+    catch(error){
+
+        const linea = [
+
+            [
+                ruta.inicioLat,
+                ruta.inicioLng
+            ],
+
+            [
+                ruta.destinoLat,
+                ruta.destinoLng
+            ]
+
+        ];
+
+
+        capaRuta =
+        L.polyline(
+            linea,
+            {
+                color:"#0879e8",
+                weight:5,
+                dashArray:"8 8"
+            }
+        )
+        .addTo(mapa);
+
+        mapa.fitBounds(
+            capaRuta.getBounds(),
+            {
+                padding:[25,25]
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INICIAR RUTA
+   ========================================================= */
+
+function iniciarRuta(){
+
+    if(!rutaActual)
+        return;
+
+
+    if(
+        !rutaActual.geometria ||
+        !rutaActual.geometria.length
+    ){
+
+        mostrarToast(
+            "Calculando la ruta..."
+        );
+
+        dibujarRuta(rutaActual)
+        .then(
+            iniciarRuta
+        );
+
+        return;
+
+    }
+
+
+    rutaActual.estado = "Activa";
+
+    guardar();
+
+
+    if(intervaloRuta)
+        clearInterval(intervaloRuta);
+
+
+    if(marcadorTrabajador)
+        marcadorTrabajador.remove();
+
+
+    let posicion = 0;
+
+
+    marcadorTrabajador =
+    L.marker(
+        rutaActual.geometria[0]
+    )
+    .addTo(mapa)
+    .bindPopup(
+        "🛵 Posición del trabajador"
+    );
+
+
+    marcadorTrabajador.openPopup();
+
+
+    intervaloRuta =
+    setInterval(function(){
+
+        if(
+            posicion >=
+            rutaActual.geometria.length - 1
+        ){
+
+            clearInterval(
+                intervaloRuta
+            );
+
+            return;
+
+        }
+
+
+        posicion++;
+
+
+        marcadorTrabajador.setLatLng(
+            rutaActual.geometria[posicion]
+        );
+
+
+        mapa.panTo(
+            rutaActual.geometria[posicion],
+            {
+                animate:true
+            }
+        );
+
+
+    },1000);
+
+
+    mostrarToast(
+        "🛵 Ruta iniciada"
+    );
+
+}
+
+
+/* =========================================================
+   PAUSAR
+   ========================================================= */
+
+function pausarRuta(){
+
+    if(intervaloRuta){
+
+        clearInterval(
+            intervaloRuta
+        );
+
+        intervaloRuta = null;
+
+        mostrarToast(
+            "Ruta pausada"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FINALIZAR
+   ========================================================= */
+
+function finalizarRuta(){
+
+    if(!rutaActual)
+        return;
+
+
+    if(intervaloRuta)
+        clearInterval(
+            intervaloRuta
+        );
+
+
+    intervaloRuta = null;
+
+    rutaActual.estado = "Finalizada";
+
+    guardar();
+
+
+    mostrarToast(
+        "🏁 Ruta finalizada"
+    );
+
+}
+
+
+/* =========================================================
+   GPS
+   ========================================================= */
+
+function obtenerGPS(){
+
+    if(!navigator.geolocation){
+
+        mostrarToast(
+            "GPS no disponible"
+        );
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(pos){
+
+            const lat =
+            pos.coords.latitude;
+
+            const lng =
+            pos.coords.longitude;
+
+
+            if(marcadorTrabajador){
+
+                marcadorTrabajador
+                .setLatLng([lat,lng]);
+
+            }
+
+            else{
+
+                marcadorTrabajador =
+                L.marker([lat,lng])
+                .addTo(mapa)
+                .bindPopup(
+                    "📍 Mi ubicación"
+                );
+
+            }
+
+
+            mapa.setView(
+                [lat,lng],
+                16
+            );
+
+
+            mostrarToast(
+                "GPS actualizado"
+            );
+
+        },
+
+        function(){
+
+            mostrarToast(
+                "No fue posible obtener el GPS"
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   GOOGLE MAPS
+   ========================================================= */
+
+function abrirGoogleMaps(){
+
+    if(!rutaActual)
+        return;
+
+
+    const url =
+    "https://www.google.com/maps/dir/?api=1"
+    +
+    "&origin="
+    +
+    rutaActual.inicioLat
+    +
+    ","
+    +
+    rutaActual.inicioLng
+    +
+    "&destination="
+    +
+    rutaActual.destinoLat
+    +
+    ","
+    +
+    rutaActual.destinoLng
+    +
+    "&travelmode=driving";
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   ABRIR RUTA
+   ========================================================= */
+
+function abrirRutaTrabajador(id){
+
+    const ruta =
+    datos.rutas.find(
+        r => r.id === id
+    );
+
+
+    if(!ruta)
+        return;
+
+
+    rutaActual = ruta;
+
+    mostrarPagina("miRuta");
+
+}
+
+
+/* =========================================================
+   PUNTOS
+   ========================================================= */
+
+function paginaPuntos(content){
+
+    let lista =
+    datos.puntos;
+
+
+    if(usuarioActual.rol !== "admin"){
+
+        lista =
+        lista.filter(
+            p =>
+            p.empresaId ===
+            usuarioActual.empresaId
+        );
+
+    }
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            📍 Puntos MercaCui
+            </h2>
+
+            <p>
+            Riesgos, descansos y puntos de venta
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="card table-container">
+
+    <table>
+
+    <thead>
+
+    <tr>
+
+    <th>Nombre</th>
+    <th>Tipo</th>
+    <th>Descripción</th>
+    <th>Estado</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    ${
+        lista.map(p => `
+
+        <tr>
+
+        <td>
+        ${escapar(p.nombre)}
+        </td>
+
+        <td>
+        ${escapar(p.tipo)}
+        </td>
+
+        <td>
+        ${escapar(p.descripcion)}
+        </td>
+
+        <td>
+
+        <span class="badge ${
+            p.estado === "Aprobado"
+            ? "green"
+            : "yellow"
+        }">
+
+        ${escapar(p.estado)}
+
+        </span>
+
+        </td>
+
+        </tr>
+
+        `).join("")
+    }
+
+    </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MERCADES
+   ========================================================= */
+
+function paginaDescansos(content){
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            🧘 MercaDes
+            </h2>
+
+            <p>
+            Descanso y pausas activas
+            </p>
+
+        </div>
+
+        ${
+            usuarioActual.rol !== "trabajador"
+
+            ? `
+
+            <button
+            class="btn-primary"
+            onclick="formDescanso()">
+
+            + Nuevo descanso
+
+            </button>
+
+            `
+
+            : ""
+
+        }
+
+    </div>
+
+
+    <div class="grid">
+
+    ${
+        datos.descansos.map(d => `
+
+        <div class="card">
+
+        <h3>
+        🧘 ${escapar(d.titulo)}
+        </h3>
+
+        <p>
+        <strong>Lugar:</strong>
+        ${escapar(d.lugar)}
+        </p>
+
+        <p>
+        <strong>Duración:</strong>
+        ${d.minutos} minutos
+        </p>
+
+        <p>
+        ${escapar(d.horario)}
+        </p>
+
+        </div>
+
+        `).join("")
+    }
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MERCACAP
+   ========================================================= */
+
+function paginaCapacitaciones(content){
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            🎓 MercaCap
+            </h2>
+
+            <p>
+            Formación integral para mercaderistas
+            </p>
+
+        </div>
+
+        ${
+            usuarioActual.rol !== "trabajador"
+
+            ? `
+
+            <button
+            class="btn-primary"
+            onclick="formCapacitacion()">
+
+            + Nueva capacitación
+
+            </button>
+
+            `
+
+            : ""
+
+        }
+
+    </div>
+
+
+    <div class="grid">
+
+    ${
+        datos.capacitaciones.map(c => `
+
+        <div class="card">
+
+        <h3>
+        🎓 ${escapar(c.titulo)}
+        </h3>
+
+        <p>
+
+        <strong>Tema:</strong>
+        ${escapar(c.tema)}
+
+        </p>
+
+        <p>
+
+        <strong>Fecha:</strong>
+        ${escapar(c.fecha)}
+
+        </p>
+
+        <p>
+
+        <strong>Lugar:</strong>
+        ${escapar(c.lugar)}
+
+        </p>
+
+        </div>
+
+        `).join("")
+    }
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SOLICITUDES
+   ========================================================= */
+
+function paginaSolicitudes(content){
+
+    let lista =
+    datos.solicitudes;
+
+
+    if(usuarioActual.rol === "trabajador"){
+
+        lista =
+        lista.filter(
+            s =>
+            s.trabajadorId ===
+            usuarioActual.id
+        );
+
+    }
+
+    else if(usuarioActual.rol === "empresa"){
+
+        lista =
+        lista.filter(
+            s =>
+            s.empresaId ===
+            usuarioActual.empresaId
+        );
+
+    }
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            📨 ${
+                usuarioActual.rol === "trabajador"
+                ? "Quejas, Solicitudes y Reclamos"
+                : "Solicitudes"
+            }
+            </h2>
+
+            <p>
+            Gestión de comunicaciones de los trabajadores.
+            </p>
+
+        </div>
+
+
+        ${
+            usuarioActual.rol === "trabajador"
+
+            ? `
+
+            <button
+            class="btn-primary"
+            onclick="formSolicitud()">
+
+            + Nueva solicitud
+
+            </button>
+
+            `
+
+            : ""
+
+        }
+
+    </div>
+
+
+    <div>
+
+    ${
+        lista.length
+
+        ?
+
+        lista.map(s => `
+
+        <div class="request-card">
+
+        <h4>
+        ${escapar(s.titulo)}
+        </h4>
+
+        <small>
+        ${escapar(s.tipo)}
+        </small>
+
+        <p>
+        ${escapar(s.descripcion)}
+        </p>
+
+        <br>
+
+        <span class="badge ${
+            s.estado === "Pendiente"
+            ? "yellow"
+            : s.estado === "Aprobada"
+            ? "green"
+            : "red"
+        }">
+
+        ${escapar(s.estado)}
+
+        </span>
+
+
+        ${
+            usuarioActual.rol !== "trabajador"
+            &&
+            s.estado === "Pendiente"
+
+            ?
+
+            `
+
+            <br><br>
+
+            <button
+            class="btn-green"
+            onclick="resolverSolicitud('${s.id}','Aprobada')">
+
+            Aprobar
+
+            </button>
+
+            <button
+            class="btn-danger"
+            onclick="resolverSolicitud('${s.id}','Rechazada')">
+
+            Rechazar
+
+            </button>
+
+            `
+
+            : ""
+
+        }
+
+        </div>
+
+        `).join("")
+
+        :
+
+        `<div class="card">
+        No hay solicitudes.
+        </div>`
+
+    }
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   NOTIFICACIONES
+   ========================================================= */
+
+function paginaNotificaciones(content){
+
+    const lista =
+    datos.notificaciones.filter(
+        n =>
+        n.trabajadorId ===
+        usuarioActual.id
+    );
+
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            🔔 Notificaciones
+            </h2>
+
+            <p>
+            Información de MercaCui
+            </p>
+
+        </div>
+
+    </div>
+
+
+    ${
+        lista.length
+
+        ?
+
+        lista.reverse()
+        .map(n => `
+
+        <div class="notification unread">
+
+        <strong>
+        ${escapar(n.titulo)}
+        </strong>
+
+        <p>
+        ${escapar(n.mensaje)}
+        </p>
+
+        </div>
+
+        `).join("")
+
+        :
+
+        `<div class="card">
+        No tienes notificaciones.
+        </div>`
+
+    }
+
+    `;
+
+}
+
+
+/* =========================================================
+   PROPONER PUNTO
+   ========================================================= */
+
+function paginaProponerPunto(content){
+
+    content.innerHTML = `
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+            📍 Proponer punto
+            </h2>
+
+            <p>
+            Puedes informar un riesgo,
+            descanso, punto de venta o reunión.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div id="map"></div>
+
+        <br>
+
+        <button
+        class="btn-primary"
+        onclick="seleccionarPunto()">
+
+        📍 Seleccionar ubicación
+
+        </button>
+
+        <p
+        id="ubicacionSeleccionada"
+        style="margin-top:10px;color:#66768b">
+
+        Selecciona un punto sobre el mapa.
+
+        </p>
+
+    </div>
+
+    `;
+
+
+    iniciarMapa();
+
+
+    mapa.on(
+        "click",
+        function(e){
+
+            const lat =
+            e.latlng.lat.toFixed(6);
+
+            const lng =
+            e.latlng.lng.toFixed(6);
+
+
+            window.puntoSeleccionado = {
+                lat:parseFloat(lat),
+                lng:parseFloat(lng)
+            };
+
+
+            document
+            .getElementById(
+                "ubicacionSeleccionada"
+            )
+            .innerHTML =
+            `
+            <strong>
+            Ubicación seleccionada:
+            </strong>
+            ${lat}, ${lng}
+
+            <br><br>
+
+            <button
+            class="btn-green"
+            onclick="formPropuesta()">
+
+            Continuar
+
+            </button>
+            `;
+
+        }
+    );
+
+}
+
+
+function seleccionarPunto(){
+
+    mostrarToast(
+        "Haz clic sobre el mapa para seleccionar la ubicación."
+    );
+
+}
+
+
+/* =========================================================
+   FORMULARIO PROPUESTA
+   ========================================================= */
+
+function formPropuesta(){
+
+    if(!window.puntoSeleccionado){
+
+        mostrarToast(
+            "Primero selecciona una ubicación."
+        );
+
+        return;
+
+    }
+
+
+    abrirModal(
+
+        "Proponer punto",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Tipo
+        </label>
+
+        <select id="tipoPropuesta">
+
+        <option value="riesgo">
+        Riesgo
+        </option>
+
+        <option value="descanso">
+        Descanso
+        </option>
+
+        <option value="venta">
+        Punto de venta
+        </option>
+
+        <option value="reunion">
+        Reunión
+        </option>
+
+        </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Nombre
+        </label>
+
+        <input
+        id="nombrePropuesta">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Descripción
+        </label>
+
+        <textarea
+        id="descripcionPropuesta">
+        </textarea>
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarPropuesta()">
+
+        Enviar para aprobación
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+/* =========================================================
+   GUARDAR PROPUESTA
+   ========================================================= */
+
+function guardarPropuesta(){
+
+    const punto =
+    window.puntoSeleccionado;
+
+
+    const nuevo = {
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId,
+
+        rutaId:null,
+
+        tipo:
+        document.getElementById(
+            "tipoPropuesta"
+        ).value,
+
+        nombre:
+        document.getElementById(
+            "nombrePropuesta"
+        ).value,
+
+        descripcion:
+        document.getElementById(
+            "descripcionPropuesta"
+        ).value,
+
+        lat:punto.lat,
+
+        lng:punto.lng,
+
+        estado:"Pendiente",
+
+        trabajadorId:
+        usuarioActual.id
+
+    };
+
+
+    datos.puntos.push(nuevo);
+
+
+    datos.notificaciones.push({
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId,
+
+        titulo:
+        "Nueva propuesta de punto",
+
+        mensaje:
+        usuarioActual.nombre
+        +
+        " propuso un nuevo punto para revisión.",
+
+        trabajadorId:null
+
+    });
+
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarToast(
+        "Propuesta enviada para aprobación."
+    );
+
+}
+
+
+/* =========================================================
+   MODALES
+   ========================================================= */
+
+function abrirModal(titulo,contenido){
+
+    const modal =
+    document.createElement("div");
+
+    modal.className="modal";
+
+    modal.id="modalActual";
+
+
+    modal.innerHTML = `
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>
+            ${titulo}
+            </h2>
+
+            <button
+            class="close"
+            onclick="cerrarModal()">
+
+            ×
+
+            </button>
+
+        </div>
+
+        ${contenido}
+
+    </div>
+
+    `;
+
+
+    document.body.appendChild(modal);
+
+}
+
+
+function cerrarModal(){
+
+    const modal =
+    document.getElementById(
+        "modalActual"
+    );
+
+    if(modal)
+        modal.remove();
+
+}
+
+
+/* =========================================================
+   FORM EMPRESA
+   ========================================================= */
+
+function formEmpresa(){
+
+    abrirModal(
+
+        "Nueva empresa",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Nombre
+        </label>
+
+        <input
+        id="empresaNombre">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Código
+        </label>
+
+        <input
+        id="empresaCodigo">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Contacto
+        </label>
+
+        <input
+        id="empresaContacto">
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarEmpresa()">
+
+        Guardar empresa
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarEmpresa(){
+
+    const empresa={
+
+        id:id(),
+
+        nombre:
+        document.getElementById(
+            "empresaNombre"
+        ).value,
+
+        codigo:
+        document.getElementById(
+            "empresaCodigo"
+        ).value,
+
+        contacto:
+        document.getElementById(
+            "empresaContacto"
+        ).value
+
+    };
+
+
+    datos.empresas.push(empresa);
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina("empresas");
+
+    mostrarToast(
+        "Empresa creada."
+    );
+
+}
+
+
+/* =========================================================
+   ELIMINAR EMPRESA
+   ========================================================= */
+
+function eliminarEmpresa(idEmpresa){
+
+    if(
+        !confirm(
+            "Esta acción eliminará la empresa y sus datos relacionados. ¿Continuar?"
+        )
+    )
+    return;
+
+
+    datos.empresas =
+    datos.empresas.filter(
+        e => e.id !== idEmpresa
+    );
+
+
+    datos.trabajadores =
+    datos.trabajadores.filter(
+        t => t.empresaId !== idEmpresa
+    );
+
+
+    datos.rutas =
+    datos.rutas.filter(
+        r => r.empresaId !== idEmpresa
+    );
+
+
+    datos.puntos =
+    datos.puntos.filter(
+        p => p.empresaId !== idEmpresa
+    );
+
+
+    datos.solicitudes =
+    datos.solicitudes.filter(
+        s => s.empresaId !== idEmpresa
+    );
+
+
+    guardar();
+
+    mostrarPagina("empresas");
+
+    mostrarToast(
+        "Empresa eliminada."
+    );
+
+}
+
+
+/* =========================================================
+   FORM TRABAJADOR
+   ========================================================= */
+
+function formTrabajador(){
+
+    let opciones="";
+
+
+    if(usuarioActual.rol === "admin"){
+
+        opciones =
+        datos.empresas
+        .map(
+            e =>
+            `<option value="${e.id}">
+            ${escapar(e.nombre)}
+            </option>`
+        )
+        .join("");
+
+    }
+
+    else{
+
+        opciones =
+        `<option value="${usuarioActual.empresaId}">
+        ${
+            escapar(
+                empresaActual()?.nombre
+            )
+        }
+        </option>`;
+
+    }
+
+
+    abrirModal(
+
+        "Nuevo trabajador",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Nombre
+        </label>
+
+        <input
+        id="trabajadorNombre">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Usuario
+        </label>
+
+        <input
+        id="trabajadorUsuario">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Contraseña
+        </label>
+
+        <input
+        id="trabajadorPassword"
+        value="1234">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Empresa
+        </label>
+
+        <select
+        id="trabajadorEmpresa">
+
+        ${opciones}
+
+        </select>
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarTrabajador()">
+
+        Guardar trabajador
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarTrabajador(){
+
+    const trabajador={
+
+        id:id(),
+
+        nombre:
+        document.getElementById(
+            "trabajadorNombre"
+        ).value,
+
+        usuario:
+        document.getElementById(
+            "trabajadorUsuario"
+        ).value,
+
+        password:
+        document.getElementById(
+            "trabajadorPassword"
+        ).value,
+
+        empresaId:
+        document.getElementById(
+            "trabajadorEmpresa"
+        ).value
+
+    };
+
+
+    datos.trabajadores.push(
+        trabajador
+    );
+
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina(
+        "trabajadores"
+    );
+
+    mostrarToast(
+        "Trabajador creado."
+    );
+
+}
+
+
+/* =========================================================
+   ELIMINAR TRABAJADOR
+   ========================================================= */
+
+function eliminarTrabajador(idTrabajador){
+
+    if(
+        !confirm(
+            "¿Eliminar trabajador?"
+        )
+    )
+    return;
+
+
+    datos.trabajadores =
+    datos.trabajadores.filter(
+        t => t.id !== idTrabajador
+    );
+
+
+    datos.rutas =
+    datos.rutas.map(
+        r =>
+        r.trabajadorId === idTrabajador
+        ? {...r,trabajadorId:null}
+        : r
+    );
+
+
+    guardar();
+
+    mostrarPagina(
+        "trabajadores"
+    );
+
+}
+
+
+/* =========================================================
+   FORM RUTA
+   ========================================================= */
+
+function formRuta(){
+
+    let empresasOpciones =
+    datos.empresas
+    .map(
+        e =>
+        `<option value="${e.id}">
+        ${escapar(e.nombre)}
+        </option>`
+    )
+    .join("");
+
+
+    let trabajadoresOpciones =
+    datos.trabajadores
+    .map(
+        t =>
+        `<option value="${t.id}">
+        ${escapar(t.nombre)}
+        </option>`
+    )
+    .join("");
+
+
+    abrirModal(
+
+        "Crear MercaRuta",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Nombre de la ruta
+        </label>
+
+        <input
+        id="rutaNombre"
+        value="Mercado de Bazurto → Tienda la Playita">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Empresa
+        </label>
+
+        <select
+        id="rutaEmpresa">
+
+        ${empresasOpciones}
+
+        </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Trabajador
+        </label>
+
+        <select
+        id="rutaTrabajador">
+
+        <option value="">
+        Sin asignar
+        </option>
+
+        ${trabajadoresOpciones}
+
+        </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Punto de inicio
+        </label>
+
+        <input
+        id="rutaInicio"
+        value="Mercado de Bazurto">
+
+        </div>
+
+
+        <div class="grid">
+
+        <div class="form-group">
+
+        <label>
+        Latitud inicio
+        </label>
+
+        <input
+        id="inicioLat"
+        type="number"
+        step="any"
+        value="10.3884">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Longitud inicio
+        </label>
+
+        <input
+        id="inicioLng"
+        type="number"
+        step="any"
+        value="-75.5002">
+
+        </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Destino
+        </label>
+
+        <input
+        id="rutaDestino"
+        value="Tienda la Playita - Sector Progreso">
+
+        </div>
+
+
+        <div class="grid">
+
+        <div class="form-group">
+
+        <label>
+        Latitud destino
+        </label>
+
+        <input
+        id="destinoLat"
+        type="number"
+        step="any"
+        value="10.3925">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Longitud destino
+        </label>
+
+        <input
+        id="destinoLng"
+        type="number"
+        step="any"
+        value="-75.5205">
+
+        </div>
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarRuta()">
+
+        Crear ruta
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarRuta(){
+
+    const ruta={
+
+        id:id(),
+
+        empresaId:
+        document.getElementById(
+            "rutaEmpresa"
+        ).value,
+
+        trabajadorId:
+        document.getElementById(
+            "rutaTrabajador"
+        ).value || null,
+
+        nombre:
+        document.getElementById(
+            "rutaNombre"
+        ).value,
+
+        inicio:
+        document.getElementById(
+            "rutaInicio"
+        ).value,
+
+        inicioLat:
+        parseFloat(
+            document.getElementById(
+                "inicioLat"
+            ).value
+        ),
+
+        inicioLng:
+        parseFloat(
+            document.getElementById(
+                "inicioLng"
+            ).value
+        ),
+
+        destino:
+        document.getElementById(
+            "rutaDestino"
+        ).value,
+
+        destinoLat:
+        parseFloat(
+            document.getElementById(
+                "destinoLat"
+            ).value
+        ),
+
+        destinoLng:
+        parseFloat(
+            document.getElementById(
+                "destinoLng"
+            ).value
+        ),
+
+        estado:"Asignada",
+
+        geometria:[]
+
+    };
+
+
+    datos.rutas.push(ruta);
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina("rutas");
+
+    mostrarToast(
+        "Ruta creada y asignada."
+    );
+
+}
+
+
+/* =========================================================
+   ELIMINAR RUTA
+   ========================================================= */
+
+function eliminarRuta(idRuta){
+
+    if(
+        !confirm(
+            "¿Eliminar esta ruta?"
+        )
+    )
+    return;
+
+
+    datos.rutas =
+    datos.rutas.filter(
+        r => r.id !== idRuta
+    );
+
+
+    guardar();
+
+    mostrarPagina("rutas");
+
+}
+
+
+/* =========================================================
+   FORM DESCANSO
+   ========================================================= */
+
+function formDescanso(){
+
+    abrirModal(
+
+        "Nuevo MercaDes",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Título
+        </label>
+
+        <input
+        id="descansoTitulo"
+        value="20 Minutos de Pausa activa">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Lugar
+        </label>
+
+        <input
+        id="descansoLugar"
+        value="Centro Comercial Olaya Plaza">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Duración
+        </label>
+
+        <input
+        id="descansoMinutos"
+        type="number"
+        value="20">
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarDescanso()">
+
+        Guardar
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarDescanso(){
+
+    datos.descansos.push({
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId || null,
+
+        titulo:
+        document.getElementById(
+            "descansoTitulo"
+        ).value,
+
+        lugar:
+        document.getElementById(
+            "descansoLugar"
+        ).value,
+
+        minutos:
+        parseInt(
+            document.getElementById(
+                "descansoMinutos"
+            ).value
+        ),
+
+        horario:"Según jornada"
+
+    });
+
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina("descansos");
+
+}
+
+
+/* =========================================================
+   FORM CAPACITACIÓN
+   ========================================================= */
+
+function formCapacitacion(){
+
+    abrirModal(
+
+        "Nueva MercaCap",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Título
+        </label>
+
+        <input
+        id="capTitulo"
+        value="Capacitación Integral a Mercaderistas">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Tema
+        </label>
+
+        <input
+        id="capTema"
+        value="Estrés laboral en vías y carreteras">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Fecha
+        </label>
+
+        <input
+        id="capFecha"
+        value="25 de septiembre">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Lugar
+        </label>
+
+        <input
+        id="capLugar"
+        value="Sede MercaCui Barrio Amberes">
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarCapacitacion()">
+
+        Guardar
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarCapacitacion(){
+
+    datos.capacitaciones.push({
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId || null,
+
+        titulo:
+        document.getElementById(
+            "capTitulo"
+        ).value,
+
+        tema:
+        document.getElementById(
+            "capTema"
+        ).value,
+
+        fecha:
+        document.getElementById(
+            "capFecha"
+        ).value,
+
+        lugar:
+        document.getElementById(
+            "capLugar"
+        ).value
+
+    });
+
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina(
+        "capacitaciones"
+    );
+
+}
+
+
+/* =========================================================
+   FORM SOLICITUD
+   ========================================================= */
+
+function formSolicitud(){
+
+    abrirModal(
+
+        "MercaSolicitudes",
+
+        `
+
+        <div class="form-group">
+
+        <label>
+        Tipo
+        </label>
+
+        <select id="solicitudTipo">
+
+        <option>
+        Queja
+        </option>
+
+        <option>
+        Solicitud
+        </option>
+
+        <option>
+        Reclamo
+        </option>
+
+        <option>
+        Capacitación
+        </option>
+
+        <option>
+        Condición de ruta
+        </option>
+
+        <option>
+        Propuesta de punto
+        </option>
+
+        </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Título
+        </label>
+
+        <input
+        id="solicitudTitulo"
+        placeholder="Ej. Solicitar capacitación en manejo del estrés">
+
+        </div>
+
+
+        <div class="form-group">
+
+        <label>
+        Descripción
+        </label>
+
+        <textarea
+        id="solicitudDescripcion">
+        </textarea>
+
+        </div>
+
+
+        <button
+        class="btn-primary"
+        onclick="guardarSolicitud()">
+
+        Enviar
+
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function guardarSolicitud(){
+
+    const nueva={
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId,
+
+        trabajadorId:
+        usuarioActual.id,
+
+        tipo:
+        document.getElementById(
+            "solicitudTipo"
+        ).value,
+
+        titulo:
+        document.getElementById(
+            "solicitudTitulo"
+        ).value,
+
+        descripcion:
+        document.getElementById(
+            "solicitudDescripcion"
+        ).value,
+
+        estado:"Pendiente"
+
+    };
+
+
+    datos.solicitudes.push(
+        nueva
+    );
+
+
+    datos.notificaciones.push({
+
+        id:id(),
+
+        empresaId:
+        usuarioActual.empresaId,
+
+        titulo:
+        "Nueva solicitud",
+
+        mensaje:
+        usuarioActual.nombre
+        +
+        " envió una nueva solicitud.",
+
+        trabajadorId:null
+
+    });
+
+
+    guardar();
+
+    cerrarModal();
+
+    mostrarPagina(
+        "solicitudes"
+    );
+
+
+    mostrarToast(
+        "Solicitud enviada correctamente."
+    );
+
+}
+
+
+/* =========================================================
+   RESOLVER SOLICITUD
+   ========================================================= */
+
+function resolverSolicitud(
+    solicitudId,
+    estado
+){
+
+    const solicitud =
+    datos.solicitudes.find(
+        s => s.id === solicitudId
+    );
+
+
+    if(!solicitud)
+        return;
+
+
+    solicitud.estado = estado;
+
+
+    datos.notificaciones.push({
+
+        id:id(),
+
+        trabajadorId:
+        solicitud.trabajadorId,
+
+        titulo:
+        "Actualización de solicitud",
+
+        mensaje:
+        "Tu solicitud '"
+        +
+        solicitud.titulo
+        +
+        "' fue "
+        +
+        estado.toLowerCase()
+        +
+        "."
+
+    });
+
+
+    guardar();
+
+    mostrarPagina(
+        "solicitudes"
+    );
+
+
+    mostrarToast(
+        "Solicitud actualizada."
+    );
+
+}
+
+
+/* =========================================================
+   ACTUALIZAR
+   ========================================================= */
+
+function actualizar(){
+
+    datos =
+    JSON.parse(
+        localStorage.getItem(
+            "MERCACUI_DATOS"
+        )
+    ) || datos;
+
+
+    mostrarToast(
+        "Datos actualizados."
+    );
+
+}
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+guardar();
+
 </script>
+
 </body>
 </html>
